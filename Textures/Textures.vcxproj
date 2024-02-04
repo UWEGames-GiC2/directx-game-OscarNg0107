@@ -150,6 +150,46 @@
     <ImageContentTask Include="grass.jpg" />
     <ImageContentTask Include="white.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="..\Models\test\TGA\BTN_Hyojo_tex.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="..\Models\test\TGA\BTN_Clothes_tex.tga" />
+    <ImageContentTask Include="..\Models\test\TGA\BTN_Coat_tex.tga" />
+    <ImageContentTask Include="..\Models\test\TGA\BTN_Eye_tex.tga" />
+    <ImageContentTask Include="..\Models\test\TGA\BTN_Face_tex.tga" />
+    <ImageContentTask Include="..\Models\test\TGA\BTN_Hair_shadow_tex.tga" />
+    <ImageContentTask Include="..\Models\test\TGA\BTN_Hair_tex.tga" />
+    <ImageContentTask Include="..\Models\test\TGA\BTN_Metal_tex.tga" />
+    <ImageContentTask Include="..\Models\test\TGA\BTN_Shoes_tex.tga" />
+    <ImageContentTask Include="..\Models\test\TGA\BTN_Skin_coatOFF_tex.tga" />
+    <ImageContentTask Include="..\Models\test\TGA\BTN_Skin_coatON_tex.tga" />
+    <ImageContentTask Include="..\Models\test\TGA\S_1.bmp" />
+    <ImageContentTask Include="..\Models\test\TGA\S_hur.bmp" />
+    <ImageContentTask Include="..\Models\test\TGA\S_item.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="..\Models\test\textures\auxielieryMat_diffuse.png" />
+    <ImageContentTask Include="..\Models\test\textures\auxielieryMat_metal.png" />
+    <ImageContentTask Include="..\Models\test\textures\auxielieryMat_nrm.png" />
+    <ImageContentTask Include="..\Models\test\textures\auxielieryMat_rough.png" />
+    <ImageContentTask Include="..\Models\test\textures\mainMat_diffuse.png" />
+    <ImageContentTask Include="..\Models\test\textures\mainMat_metal.png" />
+    <ImageContentTask Include="..\Models\test\textures\mainMat_nrm.png" />
+    <ImageContentTask Include="..\Models\test\textures\mainMat_rough.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="..\Models\test\Acc_C.png" />
+    <ImageContentTask Include="..\Models\test\Eye_C.png" />
+    <ImageContentTask Include="..\Models\test\Face_C.png" />
+    <ImageContentTask Include="..\Models\test\Fuku_C.png" />
+    <ImageContentTask Include="..\Models\test\Hair_C.png" />
+    <ImageContentTask Include="..\Models\test\Morph.png" />
+    <ImageContentTask Include="..\Models\test\Skin_C.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="..\Models\test\Texture+\Skin_Cplus.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

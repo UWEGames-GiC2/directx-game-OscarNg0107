@@ -91,7 +91,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     float AR = (float)_width / (float)_height;
 
     //example basic 3D stuff
-    Terrain* terrain = new Terrain("table", m_d3dDevice.Get(), m_fxFactory, Vector3(100.0f, 0.0f, 100.0f), 0.0f, 0.0f, 0.0f, 0.25f * Vector3::One);
+    Terrain* terrain = new Terrain("Botan", m_d3dDevice.Get(), m_fxFactory, Vector3(100.0f, 0.0f, 100.0f), 0.0f, 0.0f, 0.0f, 0.25f * Vector3::One);
     m_GameObjects.push_back(terrain);
 
     //L-system like tree
@@ -150,7 +150,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects.push_back(m_cam);
 
     //add Player
-    Player* pPlayer = new Player("table", m_d3dDevice.Get(), m_fxFactory);
+    Player* pPlayer = new Player("jediStarFighter", m_d3dDevice.Get(), m_fxFactory);
     m_GameObjects.push_back(pPlayer);
 
     //add a secondary camera
