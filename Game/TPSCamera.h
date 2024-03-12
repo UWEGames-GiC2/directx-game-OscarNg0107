@@ -17,6 +17,8 @@ public:
 protected:
 	GameObject*	m_targetObject; //I'm following this object
 	Vector3	m_dpos; //I'll lurk this far behind and away from it
+	float m_camYaw = 0.0f;
+	float m_camPitch = 0.0f;
 };
 
 #endif

@@ -42,7 +42,7 @@ public:
 	//setters
 	void		SetPos(Vector3 _pos) { m_pos = _pos; }
 
-	void		SetScale(float _scale) { m_scale = _scale * Vector3::One; }
+	void		SetScale(float _scale) { m_scale = _scale * Vector3::One;}
 	void		SetScale(float _x, float _y, float _z) { m_scale = Vector3(_x, _y, _z); }
 	void		SetScale(Vector3 _scale) { m_scale = _scale; }
 
