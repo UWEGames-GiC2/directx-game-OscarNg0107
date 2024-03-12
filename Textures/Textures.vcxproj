@@ -150,6 +150,22 @@
     <ImageContentTask Include="grass.jpg" />
     <ImageContentTask Include="white.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="..\Models\texture\TGA\BTN_Clothes_tex.tga" />
+    <ImageContentTask Include="..\Models\texture\TGA\BTN_Coat_tex.tga" />
+    <ImageContentTask Include="..\Models\texture\TGA\BTN_Eye_tex.tga" />
+    <ImageContentTask Include="..\Models\texture\TGA\BTN_Face_tex.tga" />
+    <ImageContentTask Include="..\Models\texture\TGA\BTN_Hair_shadow_tex.tga" />
+    <ImageContentTask Include="..\Models\texture\TGA\BTN_Hair_tex.tga" />
+    <ImageContentTask Include="..\Models\texture\TGA\BTN_Hyojo_tex.png" />
+    <ImageContentTask Include="..\Models\texture\TGA\BTN_Metal_tex.tga" />
+    <ImageContentTask Include="..\Models\texture\TGA\BTN_Shoes_tex.tga" />
+    <ImageContentTask Include="..\Models\texture\TGA\BTN_Skin_coatOFF_tex.tga" />
+    <ImageContentTask Include="..\Models\texture\TGA\BTN_Skin_coatON_tex.tga" />
+    <ImageContentTask Include="..\Models\texture\TGA\S_1.bmp" />
+    <ImageContentTask Include="..\Models\texture\TGA\S_hur.bmp" />
+    <ImageContentTask Include="..\Models\texture\TGA\S_item.bmp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
