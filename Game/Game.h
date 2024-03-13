@@ -88,39 +88,39 @@ private:
     DX::StepTimer                                   m_timer;
 
     //Scarle Added stuff
-    GameData* m_GD = NULL;			//Data to be shared to all Game Objects as they are ticked
-    DrawData* m_DD = NULL;			//Data to be shared to all 3D Game Objects as they are drawn
-    DrawData2D* m_DD2D = NULL;	    //Data to be passed by game to all 2D Game Objects via Draw 
+    std::shared_ptr <GameData> m_GD = nullptr;			//Data to be shared to all Game Objects as they are ticked
+    std::shared_ptr <DrawData> m_DD = nullptr;			//Data to be shared to all 3D Game Objects as they are drawn
+    std::shared_ptr <DrawData2D> m_DD2D = nullptr;	    //Data to be passed by game to all 2D Game Objects via Draw 
 
     //Basic 3D renderers
-    Camera* m_cam = NULL; //principle camera
-    TPSCamera* m_TPScam = NULL;//TPS cam
-    FPSCamera* m_FPScam = NULL;
-    Light* m_light = NULL; //base light
+    std::shared_ptr <Camera> m_cam = nullptr; //principle camera
+    std::shared_ptr <TPSCamera> m_TPScam = nullptr;//TPS camB
+    std::shared_ptr <FPSCamera> m_FPScam = nullptr;
+    std::shared_ptr <Light> m_light = nullptr; //base light
 
     //required for the CMO model rendering system
-    DirectX::CommonStates* m_states = NULL;
+    std::unique_ptr <DirectX::CommonStates> m_states = nullptr;
     DirectX::IEffectFactory* m_fxFactory = NULL;
 
     //basic keyboard and mouse input system
     void ReadInput(); //Get current Mouse and Keyboard states
-    std::unique_ptr<DirectX::Keyboard> m_keyboard;
-    std::unique_ptr<DirectX::Mouse> m_mouse;
+    std::unique_ptr<DirectX::Keyboard> m_keyboard = nullptr;
+    std::unique_ptr<DirectX::Mouse> m_mouse = nullptr;
 
-    list<GameObject*> m_GameObjects; //data structure to hold pointers to the 3D Game Objects
-    list<GameObject2D*> m_GameObjects2D; //data structure to hold pointers to the 2D Game Objects 
+    std::vector<std::shared_ptr<GameObject>> m_GameObjects; //data structure to hold pointers to the 3D Game Objects
+    std::vector< std::shared_ptr<GameObject2D>> m_GameObjects2D; //data structure to hold pointers to the 2D Game Objects 
 
     //list<CMOGO*> m_CMOGameObjects; //data structure to hold pointers to all 3D CMO Game Objects
     //list<CMOGO*> m_PhysicsObjects
 
-    std::vector<CMOGO*> m_ColliderObjects;
-    std::vector<CMOGO*> m_PhysicsObjects;
+    std::vector< std::shared_ptr<CMOGO>> m_ColliderObjects;
+    std::vector< std::shared_ptr<CMOGO>> m_PhysicsObjects;
 
     void CheckCollision();
                                          
     //sound stuff
 	//This uses a simple system, but a better pipeline can be used using Wave Banks
 	//See here: https://github.com/Microsoft/DirectXTK/wiki/Creating-and-playing-sounds Using wave banks Section
-    std::unique_ptr<DirectX::AudioEngine> m_audioEngine;
-    list<Sound*>m_Sounds;
+    std::unique_ptr<DirectX::AudioEngine> m_audioEngine = nullptr;
+    std::vector<std::shared_ptr<Sound>>m_Sounds;
 };
