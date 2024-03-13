@@ -18,6 +18,7 @@ TPSCamera::~TPSCamera()
 void TPSCamera::Tick(GameData* _GD)
 {
 	//Set up position of camera and target position of camera based on new position and orientation of target object
+
 	if (_GD->m_GS == GS_PLAY_TPS_CAM)
 		{
 			float speed = -0.0005f;
@@ -35,8 +36,12 @@ void TPSCamera::Tick(GameData* _GD)
 			{
 				m_camPitch = 1.5f;
 			}
-
 		}
+
+	else 
+	{
+		m_camYaw = m_targetObject->GetYaw();
+	}
 	Matrix rotCam = Matrix::CreateFromYawPitchRoll(m_camYaw, m_camPitch, 0.0f);
 	Vector3 offset = Vector3(0.0f, 20.0f, 0.0f);
 	m_target = m_targetObject->GetPos() + offset;

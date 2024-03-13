@@ -26,6 +26,7 @@ class TPSCamera;
 class FPSCamera;
 class Light;
 class Sound;
+class Player;
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
@@ -115,6 +116,8 @@ private:
 
     std::vector< std::shared_ptr<CMOGO>> m_ColliderObjects;
     std::vector< std::shared_ptr<CMOGO>> m_PhysicsObjects;
+
+    std::shared_ptr<Player> m_Player = nullptr;
 
     void CheckCollision();
                                          
