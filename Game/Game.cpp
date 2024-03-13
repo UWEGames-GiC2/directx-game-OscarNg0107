@@ -167,15 +167,15 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects.push_back(m_cam);
 
     //add Player
-    std::shared_ptr<Player> pPlayer = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory);
-    m_GameObjects.push_back(pPlayer);
-    m_PhysicsObjects.push_back(pPlayer);
+    m_Player = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory);
+    m_GameObjects.push_back(m_Player);
+    m_PhysicsObjects.push_back(m_Player);
 
     //add a secondary camera
-    m_TPScam = std::make_shared<TPSCamera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, pPlayer, Vector3::UnitY, Vector3(0.0f, 10.0f, 30.0f));
+    m_TPScam = std::make_shared<TPSCamera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, m_Player, Vector3::UnitY, Vector3(0.0f, 10.0f, 30.0f));
     m_GameObjects.push_back(m_TPScam);
 
-    m_FPScam = std::make_shared<FPSCamera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, pPlayer, Vector3::UnitY, Vector3(0.0f, 0.0f, 0.1f));
+    m_FPScam = std::make_shared<FPSCamera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, m_Player, Vector3::UnitY, Vector3(0.0f, 0.0f, 0.1f));
     m_GameObjects.push_back(m_FPScam);
     //test all GPGOs
     /*float* params = new float[3];
@@ -339,6 +339,7 @@ void Game::Render()
     if (m_GD->m_GS == GS_PLAY_TPS_CAM)
     {
         m_DD->m_cam = m_TPScam.get();
+        m_TPScam.get()->SetYaw(m_Player.get()->GetYaw());
     }
 
     //update the constant buffer for the rendering of VBGOs

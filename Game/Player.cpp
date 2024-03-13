@@ -26,13 +26,26 @@ void Player::Tick(GameData* _GD)
 	{
 	case GS_PLAY_MAIN_CAM:
 	{
+		//TURN AND FORWARD CONTROL HERE
+		Vector3 forwardMove = 40.0f * Vector3::Forward;
+		Matrix rotMove = Matrix::CreateRotationY(m_yaw);
+		forwardMove = Vector3::Transform(forwardMove, rotMove);
+		if (_GD->m_KBS.W)
 		{
-			//MOUSE CONTROL SCHEME HERE
-			float speed = 10.0f;
-			m_acc.x += speed * _GD->m_MS.x;
-			m_acc.z += speed * _GD->m_MS.y;
-			break;
+			m_acc += forwardMove;
 		}
+		if (_GD->m_KBS.S)
+		{
+			m_acc -= forwardMove;
+		}
+		break;
+		//{
+		//	//MOUSE CONTROL SCHEME HERE
+		//	float speed = 10.0f;
+		//	m_acc.x += speed * _GD->m_MS.x;
+		//	m_acc.z += speed * _GD->m_MS.y;
+		//	break;
+		//}
 	}
 	case GS_PLAY_TPS_CAM:
 	{
