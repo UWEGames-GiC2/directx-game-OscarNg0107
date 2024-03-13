@@ -64,17 +64,17 @@ void Game::Initialize(HWND _window, int _width, int _height)
     ShowCursor(false);
 
     //create GameData struct and populate its pointers
-    m_GD = new GameData;
+    m_GD = std::make_unique<GameData>();
     m_GD->m_GS = GS_PLAY_MAIN_CAM;
 
     //set up systems for 2D rendering
-    m_DD2D = new DrawData2D();
+    m_DD2D = std::make_unique<DrawData2D>();
     m_DD2D->m_Sprites.reset(new SpriteBatch(m_d3dContext.Get()));
     m_DD2D->m_Font.reset(new SpriteFont(m_d3dDevice.Get(), L"..\\Assets\\italic.spritefont"));
-    m_states = new CommonStates(m_d3dDevice.Get());
+    m_states = std::make_unique<CommonStates>(m_d3dDevice.Get());
 
     //set up DirectXTK Effects system
-    m_fxFactory = new EffectFactory(m_d3dDevice.Get());
+    m_fxFactory = std::make_unique<EffectFactory>(m_d3dDevice.Get());
     //Tell the fxFactory to look to the correct build directory to pull stuff in from
     ((EffectFactory*)m_fxFactory)->SetDirectory(L"..\\Assets");
     //init render system for VBGOs
@@ -90,91 +90,95 @@ void Game::Initialize(HWND _window, int _width, int _height)
     //create a set of dummy things to show off the engine
 
     //create a base light
-    m_light = new Light(Vector3(0.0f, 100.0f, 160.0f), Color(1.0f, 1.0f, 1.0f, 1.0f), Color(0.4f, 0.1f, 0.1f, 1.0f));
+    m_light = std::make_unique<Light>(Vector3(0.0f, 100.0f, 160.0f), Color(1.0f, 1.0f, 1.0f, 1.0f), Color(0.4f, 0.1f, 0.1f, 1.0f));
     m_GameObjects.push_back(m_light);
 
     //find how big my window is to correctly calculate my aspect ratio
     float AR = (float)_width / (float)_height;
 
     //example basic 3D stuff
-    Terrain* terrain = new Terrain("table", m_d3dDevice.Get(), m_fxFactory, Vector3(100.0f, 0.0f, 100.0f), 0.0f, 0.0f, 0.0f, 0.25f * Vector3::One);
+    std::unique_ptr<Terrain> terrain = std::make_unique<Terrain>("table", m_d3dDevice.Get(), m_fxFactory, Vector3(100.0f, 0.0f, 100.0f), 0.0f, 0.0f, 0.0f, 0.25f * Vector3::One);
     m_GameObjects.push_back(terrain);
     m_ColliderObjects.push_back(terrain);
 
-    Terrain* terrain2 = new Terrain("table", m_d3dDevice.Get(), m_fxFactory, Vector3(-100.0f, 0.0f, -100.0f), 0.0f, 0.0f, 0.0f, Vector3::One);
+    std::unique_ptr<Terrain>terrain2 = std::make_unique<Terrain>("table", m_d3dDevice.Get(), m_fxFactory, Vector3(-100.0f, 0.0f, -100.0f), 0.0f, 0.0f, 0.0f, Vector3::One);
     m_GameObjects.push_back(terrain2);
     m_ColliderObjects.push_back(terrain2);
 
-    //L-system like tree
-    Tree* tree = new Tree(4, 4, .6f, 10.0f * Vector3::Up, XM_PI / 6.0f, "JEMINA vase -up", m_d3dDevice.Get(), m_fxFactory);
-    m_GameObjects.push_back(tree);  
-    // todo: add to cmogo
+    std::unique_ptr<Terrain>test = std::make_unique<Terrain>("botan", m_d3dDevice.Get(), m_fxFactory, Vector3(200.0f, 0.0f, 100.0f), 0.0f, 0.0f, 0.0f, 0.25f * Vector3::One);
+    m_GameObjects.push_back(test);
+    m_ColliderObjects.push_back(test);
 
-    //Vertex Buffer Game Objects
-    FileVBGO* terrainBox = new FileVBGO("terrainTex", m_d3dDevice.Get());
-    m_GameObjects.push_back(terrainBox);
+    ////L-system like tree
+    //Tree* tree = new Tree(4, 4, .6f, 10.0f * Vector3::Up, XM_PI / 6.0f, "JEMINA vase -up", m_d3dDevice.Get(), m_fxFactory);
+    //m_GameObjects.push_back(tree);  
+    //// todo: add to cmogo
 
-    FileVBGO* Box = new FileVBGO("cube", m_d3dDevice.Get());
-    m_GameObjects.push_back(Box);
-    Box->SetPos(Vector3(0.0f, 0.0f, -100.0f));
-    Box->SetPitch(XM_PIDIV4);
-    Box->SetScale(20.0f);
+    ////Vertex Buffer Game Objects
+    //FileVBGO* terrainBox = new FileVBGO("terrainTex", m_d3dDevice.Get());
+    //m_GameObjects.push_back(terrainBox);
 
-    VBCube* cube = new VBCube();
-    cube->init(11, m_d3dDevice.Get());
-    cube->SetPos(Vector3(100.0f, 0.0f, 0.0f));
-    cube->SetScale(4.0f);
-    m_GameObjects.push_back(cube);
+    //FileVBGO* Box = new FileVBGO("cube", m_d3dDevice.Get());
+    //m_GameObjects.push_back(Box);
+    //Box->SetPos(Vector3(0.0f, 0.0f, -100.0f));
+    //Box->SetPitch(XM_PIDIV4);
+    //Box->SetScale(20.0f);
 
-    VBSpike* spikes = new VBSpike();
-    spikes->init(11, m_d3dDevice.Get());
-    spikes->SetPos(Vector3(0.0f, 0.0f, 100.0f));
-    spikes->SetScale(4.0f);
-    m_GameObjects.push_back(spikes);
+    //VBCube* cube = new VBCube();
+    //cube->init(11, m_d3dDevice.Get());
+    //cube->SetPos(Vector3(100.0f, 0.0f, 0.0f));
+    //cube->SetScale(4.0f);
+    //m_GameObjects.push_back(cube);
 
-    VBSpiral* spiral = new VBSpiral();
-    spiral->init(11, m_d3dDevice.Get());
-    spiral->SetPos(Vector3(-100.0f, 0.0f, 0.0f));
-    spiral->SetScale(4.0f);
-    m_GameObjects.push_back(spiral);
+    //VBSpike* spikes = new VBSpike();
+    //spikes->init(11, m_d3dDevice.Get());
+    //spikes->SetPos(Vector3(0.0f, 0.0f, 100.0f));
+    //spikes->SetScale(4.0f);
+    //m_GameObjects.push_back(spikes);
 
-    VBPillow* pillow = new VBPillow();
-    pillow->init(11, m_d3dDevice.Get());
-    pillow->SetPos(Vector3(-100.0f, 0.0f, -100.0f));
-    pillow->SetScale(4.0f);
-    m_GameObjects.push_back(pillow);
+    //VBSpiral* spiral = new VBSpiral();
+    //spiral->init(11, m_d3dDevice.Get());
+    //spiral->SetPos(Vector3(-100.0f, 0.0f, 0.0f));
+    //spiral->SetScale(4.0f);
+    //m_GameObjects.push_back(spiral);
 
-    VBSnail* snail = new VBSnail(m_d3dDevice.Get(), "shell", 150, 0.98f, 0.09f * XM_PI, 0.4f, Color(1.0f, 0.0f, 0.0f, 1.0f), Color(0.0f, 0.0f, 1.0f, 1.0f));
-    snail->SetPos(Vector3(-100.0f, 0.0f, 100.0f));
-    snail->SetScale(2.0f);
-    m_GameObjects.push_back(snail);
+    //VBPillow* pillow = new VBPillow();
+    //pillow->init(11, m_d3dDevice.Get());
+    //pillow->SetPos(Vector3(-100.0f, 0.0f, -100.0f));
+    //pillow->SetScale(4.0f);
+    //m_GameObjects.push_back(pillow);
 
-    //Marching Cubes
-    VBMarchCubes* VBMC = new VBMarchCubes();
-    VBMC->init(Vector3(-8.0f, -8.0f, -17.0f), Vector3(8.0f, 8.0f, 23.0f), 60.0f * Vector3::One, 0.01, m_d3dDevice.Get());
-    VBMC->SetPos(Vector3(100, 0, -100));
-    VBMC->SetPitch(-XM_PIDIV2);
-    VBMC->SetScale(Vector3(3, 3, 1.5));
-    m_GameObjects.push_back(VBMC);
+    //VBSnail* snail = new VBSnail(m_d3dDevice.Get(), "shell", 150, 0.98f, 0.09f * XM_PI, 0.4f, Color(1.0f, 0.0f, 0.0f, 1.0f), Color(0.0f, 0.0f, 1.0f, 1.0f));
+    //snail->SetPos(Vector3(-100.0f, 0.0f, 100.0f));
+    //snail->SetScale(2.0f);
+    //m_GameObjects.push_back(snail);
+
+    ////Marching Cubes
+    //VBMarchCubes* VBMC = new VBMarchCubes();
+    //VBMC->init(Vector3(-8.0f, -8.0f, -17.0f), Vector3(8.0f, 8.0f, 23.0f), 60.0f * Vector3::One, 0.01, m_d3dDevice.Get());
+    //VBMC->SetPos(Vector3(100, 0, -100));
+    //VBMC->SetPitch(-XM_PIDIV2);
+    //VBMC->SetScale(Vector3(3, 3, 1.5));
+    //m_GameObjects.push_back(VBMC);
 
     //create a base camera
-    m_cam = new Camera(0.25f * XM_PI, AR, 1.0f, 10000.0f, Vector3::UnitY, Vector3::Zero);
+    m_cam = std::make_unique<Camera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, Vector3::UnitY, Vector3::Zero);
     m_cam->SetPos(Vector3(0.0f, 200.0f, 200.0f));
     m_GameObjects.push_back(m_cam);
 
     //add Player
-    Player* pPlayer = new Player("botan", m_d3dDevice.Get(), m_fxFactory);
+    std::unique_ptr<Player> pPlayer = std::make_unique<Player>("botan", m_d3dDevice.Get(), m_fxFactory);
     m_GameObjects.push_back(pPlayer);
     m_PhysicsObjects.push_back(pPlayer);
 
     //add a secondary camera
-    m_TPScam = new TPSCamera(0.25f * XM_PI, AR, 1.0f, 10000.0f, pPlayer, Vector3::UnitY, Vector3(0.0f, 10.0f, 50.0f));
+    m_TPScam = std::make_unique<TPSCamera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, pPlayer, Vector3::UnitY, Vector3(0.0f, 10.0f, 30.0f));
     m_GameObjects.push_back(m_TPScam);
 
-    m_FPScam = new FPSCamera(0.25f * XM_PI, AR, 1.0f, 10000.0f, pPlayer, Vector3::UnitY, Vector3(0.0f, 0.0f, 0.1f));
+    m_FPScam = std::make_unique<FPSCamera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, pPlayer, Vector3::UnitY, Vector3(0.0f, 0.0f, 0.1f));
     m_GameObjects.push_back(m_FPScam);
     //test all GPGOs
-    float* params = new float[3];
+    /*float* params = new float[3];
     params[0] = 10.f;  params[1] = 20.0f; params[2] = 30.f;
     GPGO* pGPGO = new GPGO(m_d3dContext.Get(), GPGO_BOX, (float*)&Colors::Azure, params);
     pGPGO->SetPos(Vector3(-50.0f, 10.0f, -100.f));
@@ -222,7 +226,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     params[0] = 30.0f; params[1] = 10.0f; params[2] = (size_t)32;
     pGPGO = new GPGO(m_d3dContext.Get(), GPGO_TORUS, (float*)&Colors::Aquamarine, params);
     pGPGO->SetPos(Vector3(-50.0f, 10.0f, 230.f));
-    m_GameObjects.push_back(pGPGO);
+    m_GameObjects.push_back(pGPGO);*/
 
     //create DrawData struct and populate its pointers
     m_DD = new DrawData;
@@ -232,20 +236,20 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_DD->m_light = m_light;
 
     //example basic 2D stuff
-    ImageGO2D* logo = new ImageGO2D("logo_small", m_d3dDevice.Get());
+    std::unique_ptr<ImageGO2D> logo = std::make_unique<ImageGO2D>("logo_small", m_d3dDevice.Get());
     logo->SetPos(200.0f * Vector2::One);
     m_GameObjects2D.push_back(logo);
-    ImageGO2D* bug_test = new ImageGO2D("bug_test", m_d3dDevice.Get());
+    std::unique_ptr<ImageGO2D> bug_test = std::make_unique<ImageGO2D>("bug_test", m_d3dDevice.Get());
     bug_test->SetPos(300.0f * Vector2::One);
     m_GameObjects2D.push_back(bug_test);
 
-    TextGO2D* text = new TextGO2D("Test Text");
+    std::unique_ptr<TextGO2D> text = std::make_unique<TextGO2D>("SBTest Text");
     text->SetPos(Vector2(100, 10));
     text->SetColour(Color((float*)&Colors::Yellow));
     m_GameObjects2D.push_back(text);
 
     //Test Sounds
-    Loop* loop = new Loop(m_audioEngine.get(), "NightAmbienceSimple_02");
+    std::unique_ptr <Loop> loop = std::make_unique<Loop>(m_audioEngine.get(), "NightAmbienceSimple_02");
     loop->SetVolume(0.1f);
     loop->Play();
     m_Sounds.push_back(loop);

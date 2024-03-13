@@ -28,9 +28,13 @@ public:
 	BoundingOrientedBox&		getCollider()		noexcept { return m_collider; }
 	const BoundingOrientedBox&	getCollider() const noexcept { return m_collider; }
 
+	BoundingSphere& getSCollider()		noexcept { return m_SphereCollider; }
+	const BoundingSphere& getSCollider() const noexcept { return m_SphereCollider; }
+
 protected:
 	unique_ptr<Model>  m_model;
 	BoundingOrientedBox m_collider;
+	BoundingSphere m_SphereCollider;
 
 	//needs a slightly different raster state that the VBGOs so create one and let them all use it
 	static ID3D11RasterizerState*  s_pRasterState;
