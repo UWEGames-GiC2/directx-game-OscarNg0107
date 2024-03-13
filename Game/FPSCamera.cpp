@@ -2,10 +2,10 @@
 #include "FPSCamera.h"
 #include "GameData.h"
 
-FPSCamera::FPSCamera(float _fieldOfView, float _aspectRatio, float _nearPlaneDistance, float _farPlaneDistance, GameObject* _target, Vector3 _up, Vector3 _dpos)
+FPSCamera::FPSCamera(float _fieldOfView, float _aspectRatio, float _nearPlaneDistance, float _farPlaneDistance, std::shared_ptr<GameObject> _target, Vector3 _up, Vector3 _dpos)
 	:Camera(_fieldOfView, _aspectRatio, _nearPlaneDistance, _farPlaneDistance, _up)
 {
-	m_targetObject = _target;
+	m_targetObject = _target.get();
 	m_dpos = _dpos;
 }
 
