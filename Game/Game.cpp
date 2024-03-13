@@ -339,7 +339,6 @@ void Game::Render()
     if (m_GD->m_GS == GS_PLAY_TPS_CAM)
     {
         m_DD->m_cam = m_TPScam.get();
-        m_TPScam.get()->SetYaw(m_Player.get()->GetYaw());
     }
 
     //update the constant buffer for the rendering of VBGOs
