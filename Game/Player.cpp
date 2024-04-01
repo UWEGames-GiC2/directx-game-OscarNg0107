@@ -87,6 +87,18 @@ void Player::Tick(GameData* _GD)
 		m_acc.y -= 40.0f;
 	}
 
+	if(_GD->m_MS.leftButton)
+	{
+		bool foundProjectile = false;
+		for(size_t i =0; i < projectiles.size(); i++)
+		{
+			if(!projectiles[i]->GetIsActive())
+			{
+				projectiles[i]->Fire(this->GetPos(), Vector3::Forward,this->GetPitch(), this->GetYaw());
+			}
+		}
+	}
+
 	//limit motion of the player
 	//float length = m_pos.Length();
 	//float maxLength = 500.0f;

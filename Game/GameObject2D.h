@@ -33,6 +33,8 @@ public:
 	void SetScale(Vector2 _scale) { m_scale = _scale; }
 	void SetScale(float _scale) { m_scale = _scale * Vector2::One; }
 	void SetOrigin(Vector2 _origin) { m_origin = _origin; }
+	void SetActive(bool _isActive) { m_IsAtive = _isActive; }
+	bool IsActive() { return m_IsAtive; }
 
 protected:
 	Vector2 m_pos;
@@ -40,6 +42,7 @@ protected:
 	Vector2 m_scale;
 	Color m_colour;
 	Vector2 m_origin;
+	bool m_IsAtive = true;
 
 };
 

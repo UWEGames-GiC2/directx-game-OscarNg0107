@@ -109,6 +109,14 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects.push_back(test);
     m_ColliderObjects.push_back(test);
 
+    for(size_t i =0; i < 10; i++)
+    {
+        std::shared_ptr<Projectile> pProjectile = std::make_shared<Projectile>("BirdModelV1", m_d3dDevice.Get(), m_fxFactory, 5.0f, 40.0f);
+        pProjectile->SetActive(false);
+        m_GameObjects.push_back(pProjectile);
+        m_Projectiles.push_back(pProjectile);
+    }
+
     ////L-system like tree
     //Tree* tree = new Tree(4, 4, .6f, 10.0f * Vector3::Up, XM_PI / 6.0f, "JEMINA vase -up", m_d3dDevice.Get(), m_fxFactory);
     //m_GameObjects.push_back(tree);  
@@ -170,7 +178,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_Player = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory);
     m_GameObjects.push_back(m_Player);
     m_PhysicsObjects.push_back(m_Player);
-
+    m_Player->projectiles = m_Projectiles;
     //add a secondary camera
     m_TPScam = std::make_shared<TPSCamera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, m_Player, Vector3::UnitY, Vector3(0.0f, 10.0f, 30.0f));
     m_GameObjects.push_back(m_TPScam);
@@ -316,8 +324,14 @@ void Game::Update(DX::StepTimer const& _timer)
     {
         (*it)->Tick(m_GD.get());
     }
+    for (std::vector<std::shared_ptr<Projectile>>::iterator it = m_Projectiles.begin(); it != m_Projectiles.end(); it++)
+    {
+        (*it)->Tick(m_GD.get());
+    }
+
 
     CheckCollision();
+    CheckProjectileCollision();
 }
 
 // Draws the scene.
@@ -347,14 +361,20 @@ void Game::Render()
     //Draw 3D Game Obejects
     for (std::vector<std::shared_ptr<GameObject>>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
     {
-        (*it)->Draw(m_DD.get());
+        if((*it).get()->GetIsActive())
+        {
+            (*it)->Draw(m_DD.get());
+        } 
     }
 
     // Draw sprite batch stuff 
     m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
     for (std::vector<std::shared_ptr<GameObject2D>>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
     {
-        (*it)->Draw(m_DD2D.get());
+        if ((*it).get()->IsActive())
+        {
+            (*it)->Draw(m_DD2D.get());
+        }
     }
     m_DD2D->m_Sprites->End();
 
@@ -645,6 +665,18 @@ void Game::CheckCollision()
             XMFLOAT3 eject_vect = Collision::ejectionCMOGO(*m_PhysicsObjects[i], *m_ColliderObjects[j]);
             auto pos = m_PhysicsObjects[i]->GetPos();
             m_PhysicsObjects[i]->SetPos(pos - eject_vect);
+        }
+    }
+}
+
+void Game::CheckProjectileCollision()
+{
+    for (int i = 0; i < m_Projectiles.size(); i++) for (int j = 0; j < m_ColliderObjects.size(); j++)
+    {
+        if (m_Projectiles[i]->GetIsActive() && m_Projectiles[i]->Intersects(*m_ColliderObjects[j])) //std::cout << "Collision Detected!" << std::endl;
+        {
+            std::cout << "collision" << std::endl;
+            m_Projectiles[i]->SetActive(false);
         }
     }
 }
