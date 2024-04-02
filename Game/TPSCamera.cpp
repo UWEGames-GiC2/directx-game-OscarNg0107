@@ -27,7 +27,7 @@ void TPSCamera::Tick(GameData* _GD)
 
 			m_camPitch += sin(speed * _GD->m_MS.y) * m_dpos.z;
 
-			std::cout << m_camPitch << std::endl;
+			//std::cout << m_camPitch << std::endl;
 			if(m_camPitch < -1.3f)
 			{
 				m_camPitch = -1.3f;

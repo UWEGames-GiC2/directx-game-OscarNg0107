@@ -97,17 +97,19 @@ void Game::Initialize(HWND _window, int _width, int _height)
     float AR = (float)_width / (float)_height;
 
     //example basic 3D stuff
-    std::shared_ptr<Terrain> terrain = std::make_shared<Terrain>("table", m_d3dDevice.Get(), m_fxFactory, Vector3(100.0f, 0.0f, 100.0f), 0.0f, 0.0f, 0.0f, 0.25f * Vector3::One);
+    std::shared_ptr<Terrain> terrain = std::make_shared<Terrain>("table", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, -100.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.25f * Vector3::One);
     m_GameObjects.push_back(terrain);
     m_ColliderObjects.push_back(terrain);
 
-    std::shared_ptr<Terrain>terrain2 = std::make_shared<Terrain>("table", m_d3dDevice.Get(), m_fxFactory, Vector3(-100.0f, 0.0f, -100.0f), 0.0f, 0.0f, 0.0f, Vector3::One);
+    std::shared_ptr<Terrain>terrain2 = std::make_shared<Terrain>("table", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, 100.0f, 0.0f), 0.0f, 0.0f, 0.0f, Vector3::One);
     m_GameObjects.push_back(terrain2);
     m_ColliderObjects.push_back(terrain2);
 
     std::shared_ptr<Terrain>test = std::make_shared<Terrain>("botan", m_d3dDevice.Get(), m_fxFactory, Vector3(200.0f, 0.0f, 100.0f), 0.0f, 0.0f, 0.0f, 0.25f * Vector3::One);
     m_GameObjects.push_back(test);
     m_ColliderObjects.push_back(test);
+
+    
 
     for(size_t i =0; i < 10; i++)
     {
@@ -116,58 +118,6 @@ void Game::Initialize(HWND _window, int _width, int _height)
         m_GameObjects.push_back(pProjectile);
         m_Projectiles.push_back(pProjectile);
     }
-
-    ////L-system like tree
-    //Tree* tree = new Tree(4, 4, .6f, 10.0f * Vector3::Up, XM_PI / 6.0f, "JEMINA vase -up", m_d3dDevice.Get(), m_fxFactory);
-    //m_GameObjects.push_back(tree);  
-    //// todo: add to cmogo
-
-    ////Vertex Buffer Game Objects
-    //FileVBGO* terrainBox = new FileVBGO("terrainTex", m_d3dDevice.Get());
-    //m_GameObjects.push_back(terrainBox);
-
-    //FileVBGO* Box = new FileVBGO("cube", m_d3dDevice.Get());
-    //m_GameObjects.push_back(Box);
-    //Box->SetPos(Vector3(0.0f, 0.0f, -100.0f));
-    //Box->SetPitch(XM_PIDIV4);
-    //Box->SetScale(20.0f);
-
-    //VBCube* cube = new VBCube();
-    //cube->init(11, m_d3dDevice.Get());
-    //cube->SetPos(Vector3(100.0f, 0.0f, 0.0f));
-    //cube->SetScale(4.0f);
-    //m_GameObjects.push_back(cube);
-
-    //VBSpike* spikes = new VBSpike();
-    //spikes->init(11, m_d3dDevice.Get());
-    //spikes->SetPos(Vector3(0.0f, 0.0f, 100.0f));
-    //spikes->SetScale(4.0f);
-    //m_GameObjects.push_back(spikes);
-
-    //VBSpiral* spiral = new VBSpiral();
-    //spiral->init(11, m_d3dDevice.Get());
-    //spiral->SetPos(Vector3(-100.0f, 0.0f, 0.0f));
-    //spiral->SetScale(4.0f);
-    //m_GameObjects.push_back(spiral);
-
-    //VBPillow* pillow = new VBPillow();
-    //pillow->init(11, m_d3dDevice.Get());
-    //pillow->SetPos(Vector3(-100.0f, 0.0f, -100.0f));
-    //pillow->SetScale(4.0f);
-    //m_GameObjects.push_back(pillow);
-
-    //VBSnail* snail = new VBSnail(m_d3dDevice.Get(), "shell", 150, 0.98f, 0.09f * XM_PI, 0.4f, Color(1.0f, 0.0f, 0.0f, 1.0f), Color(0.0f, 0.0f, 1.0f, 1.0f));
-    //snail->SetPos(Vector3(-100.0f, 0.0f, 100.0f));
-    //snail->SetScale(2.0f);
-    //m_GameObjects.push_back(snail);
-
-    ////Marching Cubes
-    //VBMarchCubes* VBMC = new VBMarchCubes();
-    //VBMC->init(Vector3(-8.0f, -8.0f, -17.0f), Vector3(8.0f, 8.0f, 23.0f), 60.0f * Vector3::One, 0.01, m_d3dDevice.Get());
-    //VBMC->SetPos(Vector3(100, 0, -100));
-    //VBMC->SetPitch(-XM_PIDIV2);
-    //VBMC->SetScale(Vector3(3, 3, 1.5));
-    //m_GameObjects.push_back(VBMC);
 
     //create a base camera
     m_cam = std::make_shared<Camera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, Vector3::UnitY, Vector3::Zero);
@@ -179,62 +129,16 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects.push_back(m_Player);
     m_PhysicsObjects.push_back(m_Player);
     m_Player->projectiles = m_Projectiles;
+
+    std::shared_ptr<CamTarget>camtarget = std::make_shared<CamTarget>("table", m_d3dDevice.Get(), m_fxFactory, 10.0f, 10.0f, m_Player);
+    m_GameObjects.push_back(camtarget);
+
     //add a secondary camera
     m_TPScam = std::make_shared<TPSCamera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, m_Player, Vector3::UnitY, Vector3(0.0f, 10.0f, 30.0f));
     m_GameObjects.push_back(m_TPScam);
 
-    m_FPScam = std::make_shared<FPSCamera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, m_Player, Vector3::UnitY, Vector3(0.0f, 0.0f, 0.1f));
+    m_FPScam = std::make_shared<FPSCamera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, camtarget,m_Player, Vector3::UnitY, Vector3(0.0f, 0.0f, 0.1f));
     m_GameObjects.push_back(m_FPScam);
-    //test all GPGOs
-    /*float* params = new float[3];
-    params[0] = 10.f;  params[1] = 20.0f; params[2] = 30.f;
-    GPGO* pGPGO = new GPGO(m_d3dContext.Get(), GPGO_BOX, (float*)&Colors::Azure, params);
-    pGPGO->SetPos(Vector3(-50.0f, 10.0f, -100.f));
-    m_GameObjects.push_back(pGPGO);
-    params[0] = params[1] = 20.0f; params[2] = (size_t)32;
-    pGPGO = new GPGO(m_d3dContext.Get(), GPGO_CONE, (float*)&Colors::Navy,params);
-    pGPGO->SetPos(Vector3(-50.0f, 10.0f, -70.f));
-    m_GameObjects.push_back(pGPGO);
-    params[0] = 15.0f;
-    pGPGO = new GPGO(m_d3dContext.Get(), GPGO_CUBE, (float*)&Colors::SeaGreen, params);
-    pGPGO->SetPos(Vector3(-50.0f, 10.0f, -40.f));
-    m_GameObjects.push_back(pGPGO);
-    params[0] = params[1] = 20.0f; params[2] = (size_t)32;
-    pGPGO = new GPGO(m_d3dContext.Get(), GPGO_CYLINDER, (float*)&Colors::OliveDrab, params);
-    pGPGO->SetPos(Vector3(-50.0f, 10.0f, -10.f));
-    m_GameObjects.push_back(pGPGO);
-    params[0] = 15.0f;
-    pGPGO = new GPGO(m_d3dContext.Get(), GPGO_DODECAHEDRON, (float*)&Colors::OrangeRed,params);
-    pGPGO->SetPos(Vector3(-50.0f, 10.0f, 20.f));
-    m_GameObjects.push_back(pGPGO);
-    params[0] =  15.0f; params[1] = (size_t)3;
-    pGPGO = new GPGO(m_d3dContext.Get(), GPGO_GEOSPHERE, (float*)&Colors::BlueViolet, params);
-    pGPGO->SetPos(Vector3(-50.0f, 10.0f, 50.f));
-    m_GameObjects.push_back(pGPGO);
-    params[0] = 20;
-    pGPGO = new GPGO(m_d3dContext.Get(), GPGO_ICOSAHEDRON, (float*)&Colors::DodgerBlue, params);
-    pGPGO->SetPos(Vector3(-50.0f, 10.0f, 80.f));
-    m_GameObjects.push_back(pGPGO);
-    params[0] = 20;
-    pGPGO = new GPGO(m_d3dContext.Get(), GPGO_OCTAHEDRON, (float*)&Colors::PaleTurquoise, params);
-    pGPGO->SetPos(Vector3(-50.0f, 10.0f, 110.f));
-    m_GameObjects.push_back(pGPGO);
-    params[0] = 15.0f; params[1] = (size_t)16;
-    pGPGO = new GPGO(m_d3dContext.Get(), GPGO_SPHERE, (float*)&Colors::LawnGreen, params);
-    pGPGO->SetPos(Vector3(-50.0f, 10.0f, 140.0));
-    m_GameObjects.push_back(pGPGO);
-    params[0] = 15.0f; params[1] = (size_t)8;
-    pGPGO = new GPGO(m_d3dContext.Get(), GPGO_TEAPOT, (float*)&Colors::YellowGreen, params);
-    pGPGO->SetPos(Vector3(-50.0f, 10.0f, 170.0f));
-    m_GameObjects.push_back(pGPGO);
-    params[0] = 20;
-    pGPGO = new GPGO(m_d3dContext.Get(), GPGO_TETRAHEDRON, (float*)&Colors::Firebrick, params);
-    pGPGO->SetPos(Vector3(-50.0f, 10.0f, 200.f));
-    m_GameObjects.push_back(pGPGO);
-    params[0] = 30.0f; params[1] = 10.0f; params[2] = (size_t)32;
-    pGPGO = new GPGO(m_d3dContext.Get(), GPGO_TORUS, (float*)&Colors::Aquamarine, params);
-    pGPGO->SetPos(Vector3(-50.0f, 10.0f, 230.f));
-    m_GameObjects.push_back(pGPGO);*/
 
     //create DrawData struct and populate its pointers
     m_DD = std::make_unique<DrawData>();

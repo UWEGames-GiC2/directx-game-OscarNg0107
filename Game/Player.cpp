@@ -2,6 +2,7 @@
 #include "Player.h"
 #include <dinput.h>
 #include "GameData.h"
+#include <iostream>
 
 Player::Player(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF) : CMOGO(_fileName, _pd3dDevice, _EF)
 {
@@ -87,6 +88,7 @@ void Player::Tick(GameData* _GD)
 		m_acc.y -= 40.0f;
 	}
 
+	//Shoot Projectile
 	if(_GD->m_MS.leftButton)
 	{
 		bool foundProjectile = false;
