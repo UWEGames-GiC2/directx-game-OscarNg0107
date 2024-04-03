@@ -125,20 +125,22 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects.push_back(m_cam);
 
     //add Player
-    m_Player = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory);
+    m_Player = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory, AR);
     m_GameObjects.push_back(m_Player);
     m_PhysicsObjects.push_back(m_Player);
     m_Player->projectiles = m_Projectiles;
 
     std::shared_ptr<CamTarget>camtarget = std::make_shared<CamTarget>("table", m_d3dDevice.Get(), m_fxFactory, 10.0f, 10.0f, m_Player);
     m_GameObjects.push_back(camtarget);
-
+    m_Player->AddCamTargetChild(camtarget);
     //add a secondary camera
     m_TPScam = std::make_shared<TPSCamera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, m_Player, Vector3::UnitY, Vector3(0.0f, 10.0f, 30.0f));
     m_GameObjects.push_back(m_TPScam);
 
     m_FPScam = std::make_shared<FPSCamera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, camtarget,m_Player, Vector3::UnitY, Vector3(0.0f, 0.0f, 0.1f));
     m_GameObjects.push_back(m_FPScam);
+    m_Player->AddCameraChild(m_FPScam);
+   
 
     //create DrawData struct and populate its pointers
     m_DD = std::make_unique<DrawData>();

@@ -2,6 +2,7 @@
 #include "Projectile.h"
 #include <dinput.h>
 #include "GameData.h"
+#include <iostream>
 
 Projectile::Projectile(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, float _lifetime, float _speed) : CMOGO(_fileName, _pd3dDevice, _EF)
 {
@@ -38,12 +39,15 @@ void Projectile::Tick(GameData* _GD)
 
 void Projectile::Fire(Vector3 _startpos, Vector3 _OwnerForwardVector, float _pitch, float _yaw)
 {
+	
 	Vector3 forwardMove = m_speed * _OwnerForwardVector;
-	Matrix rotMove = Matrix::CreateRotationY(_yaw);
+	//Matrix rotMove = Matrix::CreateRotationY(_yaw);
+	Matrix rotMove = Matrix::CreateFromYawPitchRoll(_yaw, _pitch, 0);
 	forwardMove = Vector3::Transform(forwardMove, rotMove);
 	SetPos(_startpos);
 	SetActive(true);
 	SetYaw(_yaw);
+	SetPitch(_pitch);
 	SetDrag(0.01f);
 	SetPhysicsOn(true);
 	SetAcceleration(forwardMove * 1000.0f);

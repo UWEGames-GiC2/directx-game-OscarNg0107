@@ -24,7 +24,7 @@ void FPSCamera::Tick(GameData* _GD)
 	forwardMove = Vector3::Transform(forwardMove, rotMove);
 	m_pos = m_owner->GetPos() + forwardMove + m_owner->GetVectorUp() * 15.0f;
 
-	//std::cout << "x: " << forwardMove.x << std::endl;
+	//std::cout << "x: " << m_yaw<< std::endl;
 	//std::cout << "y: " << forwardMove.y << std::endl;
 	//std::cout << "z: " << forwardMove.z << std::endl;
 

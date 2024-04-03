@@ -4,7 +4,7 @@
 #include "GameData.h"
 #include <iostream>
 
-Player::Player(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF) : CMOGO(_fileName, _pd3dDevice, _EF)
+Player::Player(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, float _aspectRatio) : CMOGO(_fileName, _pd3dDevice, _EF) 
 {
 	//any special set up for Player goes here
 	m_fudge = Matrix::CreateRotationY(XM_PI);
@@ -119,11 +119,19 @@ void Player::Tick(GameData* _GD)
 		{
 			if(!projectiles[i]->GetIsActive())
 			{
-				projectiles[i]->Fire(this->GetPos(), Vector3::Forward,this->GetPitch(), this->GetYaw());
+				//float lookPitch = atan2(-(m_FPScamP->GetView()(3, 1)), sqrtf(pow((m_FPScamP->GetView()(3, 2)), 2) + pow((m_FPScamP->GetView()(3, 3)), 2)));
+				Vector3 moveDir = (m_CamTargetP->GetPos() - m_FPScamP->GetPos());
+				moveDir.Normalize();
+				Vector3 forwardOffset = Vector3::Transform(Vector3::Forward, Matrix::CreateRotationY(m_yaw));
+				Vector3 upOffset = Vector3::Up * 15;
+				projectiles[i]->Fire(this->GetPos() + forwardOffset + upOffset, Vector3::Forward, moveDir.y , this->GetYaw());
+				std::cout << moveDir.y << std::endl;
+				
 			}
 		}
 	}
-
+	float lookPitch = atan2(-(m_FPScamP->GetView()(3, 1)), sqrtf(pow((m_FPScamP->GetView()(3, 2)), 2) + pow((m_FPScamP->GetView()(3, 3)), 2)));
+	//std::cout << lookPitch *180 / (atan(1) * 4) << std::endl;
 	//limit motion of the player
 	//float length = m_pos.Length();
 	//float maxLength = 500.0f;
@@ -136,4 +144,15 @@ void Player::Tick(GameData* _GD)
 
 	//apply my base behaviour
 	CMOGO::Tick(_GD);
+}
+
+void Player::AddCameraChild(std::shared_ptr<FPSCamera> _child)
+{
+	m_FPScamP = _child;
+}
+
+
+void Player::AddCamTargetChild(std::shared_ptr<CamTarget> _child)
+{
+	m_CamTargetP = _child;
 }

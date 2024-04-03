@@ -23,7 +23,7 @@ CamTarget::~CamTarget()
 
 void CamTarget::Tick(GameData* _GD)
 {
-	float speed = -0.01f * _GD->m_dt;
+	float speed = -0.01f  * _GD->m_dt;
 
 	m_Yaw = m_targetObject->GetYaw();
 
