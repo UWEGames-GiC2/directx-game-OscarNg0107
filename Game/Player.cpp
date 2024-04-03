@@ -23,58 +23,81 @@ Player::~Player()
 
 void Player::Tick(GameData* _GD)
 {
-	switch (_GD->m_GS)
+	//switch (_GD->m_GS)
+	//{
+	//case GS_PLAY_MAIN_CAM:
+	//{
+	//	//TURN AND FORWARD CONTROL HERE
+	//	Vector3 forwardMove = 40.0f * Vector3::Forward;
+	//	Matrix rotMove = Matrix::CreateRotationY(m_yaw);
+	//	forwardMove = Vector3::Transform(forwardMove, rotMove);
+	//	if (_GD->m_KBS.W)
+	//	{
+	//		m_acc += forwardMove;
+	//	}
+	//	if (_GD->m_KBS.S)
+	//	{
+	//		m_acc -= forwardMove;
+	//	}
+	//	break;
+	//	{
+	//		//MOUSE CONTROL SCHEME HERE
+	//		float speed = 10.0f;
+	//		m_acc.x += speed * _GD->m_MS.x;
+	//		m_acc.z += speed * _GD->m_MS.y;
+	//		break;
+	//	}
+	//}
+	//case GS_PLAY_TPS_CAM:
+	//{
+	//	//TURN AND FORWARD CONTROL HERE
+	//	Vector3 forwardMove = 40.0f * Vector3::Forward;
+	//	Matrix rotMove = Matrix::CreateRotationY(m_yaw);
+	//	forwardMove = Vector3::Transform(forwardMove, rotMove);
+	//	if (_GD->m_KBS.W)
+	//	{
+	//		m_acc += forwardMove;
+	//	}
+	//	if (_GD->m_KBS.S)
+	//	{
+	//		m_acc -= forwardMove;
+	//	}
+	//	break;
+	//}
+	//}
+
+	//FORWARD CONTROL HERE
+	Vector3 forwardMove = 40.0f * Vector3::Forward;
+	Matrix rotMove = Matrix::CreateRotationY(m_yaw);
+	forwardMove = Vector3::Transform(forwardMove, rotMove);
+	if (_GD->m_KBS.W)
 	{
-	case GS_PLAY_MAIN_CAM:
-	{
-		//TURN AND FORWARD CONTROL HERE
-		Vector3 forwardMove = 40.0f * Vector3::Forward;
-		Matrix rotMove = Matrix::CreateRotationY(m_yaw);
-		forwardMove = Vector3::Transform(forwardMove, rotMove);
-		if (_GD->m_KBS.W)
-		{
-			m_acc += forwardMove;
-		}
-		if (_GD->m_KBS.S)
-		{
-			m_acc -= forwardMove;
-		}
-		break;
-		//{
-		//	//MOUSE CONTROL SCHEME HERE
-		//	float speed = 10.0f;
-		//	m_acc.x += speed * _GD->m_MS.x;
-		//	m_acc.z += speed * _GD->m_MS.y;
-		//	break;
-		//}
+		m_acc += forwardMove;
 	}
-	case GS_PLAY_TPS_CAM:
+	if (_GD->m_KBS.S)
 	{
-		//TURN AND FORWARD CONTROL HERE
-		Vector3 forwardMove = 40.0f * Vector3::Forward;
-		Matrix rotMove = Matrix::CreateRotationY(m_yaw);
-		forwardMove = Vector3::Transform(forwardMove, rotMove);
-		if (_GD->m_KBS.W)
-		{
-			m_acc += forwardMove;
-		}
-		if (_GD->m_KBS.S)
-		{
-			m_acc -= forwardMove;
-		}
-		break;
-	}
+		m_acc -= forwardMove;
 	}
 
-	//change orinetation of player
-	float rotSpeed = 2.0f * _GD->m_dt;
-	if (_GD->m_KBS.A)
-	{
-		m_yaw += rotSpeed;
-	}
+	//Left/Right CONTROL HERE
+	Vector3 rightMove = 40.0f * Vector3::Right;
+	//Matrix rotMove = Matrix::CreateRotationY(m_yaw);
+	rightMove = Vector3::Transform(rightMove, rotMove);
 	if (_GD->m_KBS.D)
 	{
-		m_yaw -= rotSpeed;
+		m_acc += rightMove;
+	}
+	if (_GD->m_KBS.A)
+	{
+		m_acc -= rightMove;
+	}
+
+
+	//change orinetation of player
+	float rotSpeed = -1.0f * _GD->m_dt;
+	if(_GD->m_MS.x)
+	{
+		m_yaw += rotSpeed * _GD->m_MS.x;
 	}
 
 	//move player up and down

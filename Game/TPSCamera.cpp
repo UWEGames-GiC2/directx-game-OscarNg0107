@@ -42,7 +42,8 @@ void TPSCamera::Tick(GameData* _GD)
 	{
 		m_camYaw = m_targetObject->GetYaw();
 	}
-	Matrix rotCam = Matrix::CreateFromYawPitchRoll(m_camYaw, m_camPitch, 0.0f);
+	//Matrix rotCam = Matrix::CreateFromYawPitchRoll(m_camYaw, m_camPitch, 0.0f);
+	Matrix rotCam = Matrix::CreateFromYawPitchRoll(0.0f, 0.0f, 0.0f);
 	Vector3 offset = Vector3(0.0f, 20.0f, 0.0f);
 	m_target = m_targetObject->GetPos() + offset;
 	m_pos = m_target + Vector3::Transform(m_dpos, rotCam);

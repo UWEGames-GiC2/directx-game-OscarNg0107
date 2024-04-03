@@ -11,7 +11,7 @@ private:
 	GameObject* m_targetObject;
 	float m_moveSpeed = 10.0f;
 	float m_Yaw = 0.0f;
-	float m_Pitch = 0.0f;
+	float m_Pitch = -1.5f;
 	float m_radius;
 };
 

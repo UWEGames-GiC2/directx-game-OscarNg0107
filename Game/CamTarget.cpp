@@ -23,12 +23,14 @@ CamTarget::~CamTarget()
 
 void CamTarget::Tick(GameData* _GD)
 {
-	float speed = -0.0005f;
+	float speed = -0.01f * _GD->m_dt;
 
-	m_Yaw += m_radius *sin(speed * _GD->m_MS.x);
+	m_Yaw = m_targetObject->GetYaw();
 
 
 	m_Pitch += m_radius * sin(speed * _GD->m_MS.y);
+
+	//limit the max and minimum y rotation of the camera
 	if (m_Pitch < -3.0f)
 	{
 		m_Pitch = -3.0f;
@@ -38,12 +40,13 @@ void CamTarget::Tick(GameData* _GD)
 		m_Pitch = -0.05f;
 	}
 
-	Matrix rotCam = Matrix::CreateFromYawPitchRoll(m_Yaw, 0, m_Pitch);
+	Matrix rotCam = Matrix::CreateFromYawPitchRoll(m_Yaw, m_Pitch, 0);
 	Vector3 offset = Vector3(0.0f, 0.1f, 0.0f);
-	Vector3 forwardMove = 2.0f * m_targetObject->GetVectorForward();
+	Vector3 forwardOffset = 1.0f * m_targetObject->GetVectorForward();
 	Matrix rotMove = Matrix::CreateRotationY(m_targetObject->GetYaw());
-	forwardMove = Vector3::Transform(forwardMove, rotMove);
-	m_pos = m_targetObject->GetPos() + forwardMove + m_targetObject->GetVectorUp() * 15.0f + Vector3::Transform(offset, rotCam);
+	forwardOffset = Vector3::Transform(forwardOffset, rotMove);
+	Vector3 upOffset = m_targetObject->GetVectorUp() * 15.0f;
+	m_pos = m_targetObject->GetPos() + forwardOffset + upOffset + Vector3::Transform(offset, rotCam);
 
 	CMOGO::Tick(_GD);
 
