@@ -157,10 +157,10 @@ void Game::Initialize(HWND _window, int _width, int _height)
     bug_test->SetPos(300.0f * Vector2::One);
     m_GameObjects2D.push_back(bug_test);
 
-    std::shared_ptr<TextGO2D> text = std::make_shared<TextGO2D>("SBTest Text");
+   /* std::shared_ptr<TextGO2D> text = std::make_shared<TextGO2D>("SBTest Text");
     text->SetPos(Vector2(100, 10));
     text->SetColour(Color((float*)&Colors::Yellow));
-    m_GameObjects2D.push_back(text);
+    m_GameObjects2D.push_back(text);*/
 
     //Test Sounds
     std::shared_ptr <Loop> loop = std::make_shared<Loop>(m_audioEngine.get(), "NightAmbienceSimple_02");
@@ -170,6 +170,26 @@ void Game::Initialize(HWND _window, int _width, int _height)
 
     /*TestSound* TS = new TestSound(m_audioEngine.get(), "Explo1");
     m_Sounds.push_back(TS);*/
+
+    //Menu Init
+
+    std::shared_ptr<TextGO2D> textTitle = std::make_shared<TextGO2D>("Title");
+    textTitle->SetScale(5.0f);
+    textTitle->SetPos(Vector2(m_outputWidth /2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(textTitle->GetString().data(), true))*5 /2 , m_outputHeight /5));
+    textTitle->SetColour(Color((float*)&Colors::Black));
+    m_GameObjects2D.push_back(textTitle);
+
+    std::shared_ptr<TextGO2D> textStart= std::make_shared<TextGO2D>("Start");
+    textStart->SetScale(2.0f);
+    textStart->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(textStart->GetString().data(), true)) * 2 / 2, m_outputHeight / 2));
+    textStart->SetColour(Color((float*)&Colors::Black));
+    m_GameObjects2D.push_back(textStart);
+
+    std::shared_ptr<TextGO2D> textExit = std::make_shared<TextGO2D>("Exit");
+    textExit->SetScale(2.0f);
+    textExit->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(textExit->GetString().data(), true)) * 2 / 2, m_outputHeight /2 - -XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(textStart->GetString().data(), true))));
+    textExit->SetColour(Color((float*)&Colors::Black));
+    m_GameObjects2D.push_back(textExit);
 }
 
 // Executes the basic game loop.
@@ -360,8 +380,8 @@ void Game::OnWindowSizeChanged(int _width, int _height)
 void Game::GetDefaultSize(int& _width, int& _height) const noexcept
 {
     // TODO: Change to desired default window size (note minimum size is 320x200).
-    _width = 800;
-    _height = 600;
+    _width = 1920;
+    _height = 1080;
 }
 
 // These are the resources that depend on the device.

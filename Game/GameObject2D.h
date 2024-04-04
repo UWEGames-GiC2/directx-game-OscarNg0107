@@ -34,7 +34,12 @@ public:
 	void SetScale(float _scale) { m_scale = _scale * Vector2::One; }
 	void SetOrigin(Vector2 _origin) { m_origin = _origin; }
 	void SetActive(bool _isActive) { m_IsAtive = _isActive; }
+	
+
+	//getters
+
 	bool IsActive() { return m_IsAtive; }
+	Vector2 GetScale() { return m_scale; }
 
 protected:
 	Vector2 m_pos;
