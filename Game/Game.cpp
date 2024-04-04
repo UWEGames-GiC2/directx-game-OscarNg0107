@@ -27,7 +27,7 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() noexcept :
     m_window(nullptr),
-    m_outputWidth(800),
+    m_outputWidth(1920),
     m_outputHeight(600),
     m_featureLevel(D3D_FEATURE_LEVEL_11_0)
 {
@@ -65,7 +65,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
 
     //create GameData struct and populate its pointers
     m_GD = std::make_shared<GameData>();
-    m_GD->m_GS = GS_PLAY_MAIN_CAM;
+    m_GD->m_GS = GS_MAINMENU;
 
     //set up systems for 2D rendering
     m_DD2D = std::make_shared<DrawData2D>();
@@ -162,6 +162,25 @@ void Game::Initialize(HWND _window, int _width, int _height)
     text->SetColour(Color((float*)&Colors::Yellow));
     m_GameObjects2D.push_back(text);*/
 
+
+    std::shared_ptr<TextGO2D> textTitle = std::make_shared<TextGO2D>("Title");
+    textTitle->SetScale(5.0f);
+    textTitle->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(textTitle->GetString().data(), true)) * 5 / 2, m_outputHeight / 5));
+    textTitle->SetColour(Color((float*)&Colors::Black));
+    m_MenuGameObjects2D.push_back(textTitle);
+
+    m_textStart = std::make_shared<TextGO2D>("Start");
+    m_textStart->SetScale(2.0f);
+    m_textStart->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(m_textStart->GetString().data(), true)) * 2 / 2, m_outputHeight / 2));
+    m_textStart->SetColour(Color((float*)&Colors::Black));
+    m_MenuGameObjects2D.push_back(m_textStart);
+
+    m_textExit = std::make_shared<TextGO2D>("Exit");
+    m_textExit->SetScale(2.0f);
+    m_textExit->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(m_textExit->GetString().data(), true)) * 2 / 2, m_outputHeight / 2 - -XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(m_textStart->GetString().data(), true))));
+    m_textExit->SetColour(Color((float*)&Colors::Black));
+    m_MenuGameObjects2D.push_back(m_textExit);
+
     //Test Sounds
     std::shared_ptr <Loop> loop = std::make_shared<Loop>(m_audioEngine.get(), "NightAmbienceSimple_02");
     loop->SetVolume(0.1f);
@@ -170,26 +189,9 @@ void Game::Initialize(HWND _window, int _width, int _height)
 
     /*TestSound* TS = new TestSound(m_audioEngine.get(), "Explo1");
     m_Sounds.push_back(TS);*/
+    m_mainMenu = std::make_shared<mainMenu>(m_DD2D);
+    m_mainMenu->init(m_outputWidth, m_outputHeight);
 
-    //Menu Init
-
-    std::shared_ptr<TextGO2D> textTitle = std::make_shared<TextGO2D>("Title");
-    textTitle->SetScale(5.0f);
-    textTitle->SetPos(Vector2(m_outputWidth /2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(textTitle->GetString().data(), true))*5 /2 , m_outputHeight /5));
-    textTitle->SetColour(Color((float*)&Colors::Black));
-    m_GameObjects2D.push_back(textTitle);
-
-    std::shared_ptr<TextGO2D> textStart= std::make_shared<TextGO2D>("Start");
-    textStart->SetScale(2.0f);
-    textStart->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(textStart->GetString().data(), true)) * 2 / 2, m_outputHeight / 2));
-    textStart->SetColour(Color((float*)&Colors::Black));
-    m_GameObjects2D.push_back(textStart);
-
-    std::shared_ptr<TextGO2D> textExit = std::make_shared<TextGO2D>("Exit");
-    textExit->SetScale(2.0f);
-    textExit->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(textExit->GetString().data(), true)) * 2 / 2, m_outputHeight /2 - -XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(textStart->GetString().data(), true))));
-    textExit->SetColour(Color((float*)&Colors::Black));
-    m_GameObjects2D.push_back(textExit);
 }
 
 // Executes the basic game loop.
@@ -227,37 +229,83 @@ void Game::Update(DX::StepTimer const& _timer)
     }
 
     ReadInput();
-    //upon space bar switch camera state
-    //see docs here for what's going on: https://github.com/Microsoft/DirectXTK/wiki/Keyboard
-    if (m_GD->m_KBS_tracker.pressed.Space)
+
+    if(m_GD->m_GS == GS_MAINMENU)
     {
-        if (m_GD->m_GS == GS_PLAY_MAIN_CAM)
+        /* for (std::vector<std::shared_ptr<GameObject2D>>::iterator it = m_mainMenu->GetGameObject2DList().begin(); it != m_mainMenu->GetGameObject2DList().end(); it++)
         {
-            m_GD->m_GS = GS_PLAY_TPS_CAM;
+        (*it)->Tick(m_GD.get());
+        }*/
+
+        for (std::vector<std::shared_ptr<GameObject2D>>::iterator it = m_MenuGameObjects2D.begin(); it != m_MenuGameObjects2D.end(); it++)
+        {
+            (*it)->Tick(m_GD.get());
         }
+
+        if (m_GD->m_KBS.Up || m_GD->m_KBS.Down)
+        {
+            startSelected = !startSelected;
+        }
+
+        if(startSelected)
+        {
+            m_textStart->SetColour(Color((float*)&Colors::Red));
+            m_textExit->SetColour(Color((float*)&Colors::Black));
+        }
+
         else
         {
-            m_GD->m_GS = GS_PLAY_MAIN_CAM;
+            m_textStart->SetColour(Color((float*)&Colors::Black));
+            m_textExit->SetColour(Color((float*)&Colors::Red));
         }
+        if (m_GD->m_KBS_tracker.pressed.Enter)
+        {
+            if(startSelected)
+            {
+                m_GD->m_GS = GS_PLAY_TPS_CAM;
+            }
+            else
+            {
+                ExitGame();
+            }
+        }
+
     }
 
-    //update all objects
-    for (std::vector<std::shared_ptr<GameObject>>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
+    else
     {
-        (*it)->Tick(m_GD.get());
-    }
-    for (std::vector<std::shared_ptr<GameObject2D>>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
-    {
-        (*it)->Tick(m_GD.get());
-    }
-    for (std::vector<std::shared_ptr<Projectile>>::iterator it = m_Projectiles.begin(); it != m_Projectiles.end(); it++)
-    {
-        (*it)->Tick(m_GD.get());
-    }
+    //upon space bar switch camera state
+        //see docs here for what's going on: https://github.com/Microsoft/DirectXTK/wiki/Keyboard
+        if (m_GD->m_KBS_tracker.pressed.Space)
+        {
+            if (m_GD->m_GS == GS_PLAY_MAIN_CAM)
+            {
+                m_GD->m_GS = GS_PLAY_TPS_CAM;
+            }
+            else
+            {
+                m_GD->m_GS = GS_PLAY_MAIN_CAM;
+            }
+        }
 
+        //update all objects
+        for (std::vector<std::shared_ptr<GameObject>>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
+        {
+            (*it)->Tick(m_GD.get());
+        }
+        for (std::vector<std::shared_ptr<GameObject2D>>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
+        {
+            (*it)->Tick(m_GD.get());
+        }
+    
+        for (std::vector<std::shared_ptr<Projectile>>::iterator it = m_Projectiles.begin(); it != m_Projectiles.end(); it++)
+        {
+            (*it)->Tick(m_GD.get());
+        }
 
-    CheckCollision();
-    CheckProjectileCollision();
+        CheckCollision();
+        CheckProjectileCollision();
+    }
 }
 
 // Draws the scene.
@@ -284,25 +332,51 @@ void Game::Render()
     //update the constant buffer for the rendering of VBGOs
     VBGO::UpdateConstantBuffer(m_DD.get());
 
-    //Draw 3D Game Obejects
-    for (std::vector<std::shared_ptr<GameObject>>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
-    {
-        if((*it).get()->GetIsActive())
+    if(m_GD->m_GS == GS_MAINMENU)
+    {   
+       /* for (std::vector<std::shared_ptr<GameObject2D>>::iterator it = m_mainMenu->GetGameObject2DList().begin(); it != m_mainMenu->GetGameObject2DList().end(); it++)
         {
-            (*it)->Draw(m_DD.get());
-        } 
+            if ((*it).get()->IsActive())
+            {
+                (*it)->Draw(m_DD2D.get());
+            }
+        }*/
+        m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
+        for (std::vector<std::shared_ptr<GameObject2D>>::iterator it = m_MenuGameObjects2D.begin(); it != m_MenuGameObjects2D.end(); it++)
+        {
+            if ((*it).get()->IsActive())
+            {
+                (*it)->Draw(m_DD2D.get());
+            }
+        }
+        m_DD2D->m_Sprites->End();
     }
 
-    // Draw sprite batch stuff 
-    m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
-    for (std::vector<std::shared_ptr<GameObject2D>>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
+    else
     {
-        if ((*it).get()->IsActive())
+     //Draw 3D Game Obejects
+        for (std::vector<std::shared_ptr<GameObject>>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
         {
-            (*it)->Draw(m_DD2D.get());
+            if((*it).get()->GetIsActive())
+            {
+                (*it)->Draw(m_DD.get());
+            } 
         }
+
+        // Draw sprite batch stuff 
+        m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
+        for (std::vector<std::shared_ptr<GameObject2D>>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
+        {
+            if ((*it).get()->IsActive())
+            {
+                (*it)->Draw(m_DD2D.get());
+            }
+        }
+    
+        m_DD2D->m_Sprites->End();
     }
-    m_DD2D->m_Sprites->End();
+  
+
 
     //drawing text screws up the Depth Stencil State, this puts it back again!
     m_d3dContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);

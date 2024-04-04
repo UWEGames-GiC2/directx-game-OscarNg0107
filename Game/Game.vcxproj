@@ -183,6 +183,7 @@
     <ClInclude Include="ImageGO2D.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Loop.h" />
+    <ClInclude Include="mainMenu.h" />
     <ClInclude Include="MarchCubes.h" />
     <ClInclude Include="ObjectList.h" />
     <ClInclude Include="pch.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="ImageGO2D.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="Loop.cpp" />
+    <ClCompile Include="mainMenu.cpp" />
     <ClCompile Include="MarchCubes.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

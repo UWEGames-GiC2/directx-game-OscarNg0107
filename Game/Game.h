@@ -13,6 +13,7 @@
 #include "Audio.h"
 #include "CMOGO.h"
 #include "Projectile.h"
+#include "mainMenu.h"
 
 using std::list;
 
@@ -29,6 +30,7 @@ class Light;
 class Sound;
 class Player;
 class Projectile;
+class mainMenu;
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
@@ -124,6 +126,11 @@ private:
     std::vector< std::shared_ptr<CMOGO>>m_PlayerProjectiles;
     std::vector < std::shared_ptr<Projectile>> m_Projectiles;
     std::shared_ptr<Player> m_Player = nullptr;
+
+    std::shared_ptr<mainMenu> m_mainMenu = nullptr;
+    std::shared_ptr<TextGO2D> m_textStart = nullptr;
+    std::shared_ptr<TextGO2D> m_textExit = nullptr;
+    bool startSelected = true;
 
     void CheckCollision();
     void CheckProjectileCollision();
