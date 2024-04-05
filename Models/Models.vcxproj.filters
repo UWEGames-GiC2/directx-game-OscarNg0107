@@ -22,5 +22,8 @@
     <MeshContentTask Include="Bird\BirdModelV1.fbx" />
     <MeshContentTask Include="XBot.fbx" />
     <MeshContentTask Include="botan.fbx" />
+    <MeshContentTask Include="cube.fbx" />
+    <MeshContentTask Include="cube2.fbx" />
+    <MeshContentTask Include="cube3.fbx" />
   </ItemGroup>
 </Project>

@@ -97,15 +97,31 @@ void Game::Initialize(HWND _window, int _width, int _height)
     float AR = (float)_width / (float)_height;
 
     //example basic 3D stuff
-    std::shared_ptr<Terrain> terrain = std::make_shared<Terrain>("table", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, -100.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.25f * Vector3::One);
+    std::shared_ptr<Terrain> terrain = std::make_shared<Terrain>("cube2", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f, 0.0f, Vector3(5, 1,5));
     m_GameObjects.push_back(terrain);
     m_ColliderObjects.push_back(terrain);
 
-    std::shared_ptr<Terrain>terrain2 = std::make_shared<Terrain>("table", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, 100.0f, 0.0f), 0.0f, 0.0f, 0.0f, Vector3::One);
+    std::shared_ptr<Terrain>terrain2 = std::make_shared<Terrain>("cube2", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, 100.0f, 0.0f), 0.0f, 0.0f, 0.0f, Vector3(5, 1, 5));
     m_GameObjects.push_back(terrain2);
     m_ColliderObjects.push_back(terrain2);
 
-    std::shared_ptr<Terrain>test = std::make_shared<Terrain>("botan", m_d3dDevice.Get(), m_fxFactory, Vector3(200.0f, 0.0f, 100.0f), 0.0f, 0.0f, 0.0f, 0.25f * Vector3::One);
+    std::shared_ptr<Terrain>terrain3 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(500.0f, 0.0f, 0.0f), 0.0f, 0.0f, 0.0f, Vector3(1,10,10));
+    m_GameObjects.push_back(terrain3);
+    m_ColliderObjects.push_back(terrain3);
+
+    std::shared_ptr<Terrain>terrain4 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(-500.0f, 0.0f, 0.0f), 0.0f, 0.0f, 0.0f, Vector3(1, 10, 10));
+    m_GameObjects.push_back(terrain4);
+    m_ColliderObjects.push_back(terrain4);
+
+    std::shared_ptr<Terrain>terrain5 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, 0.0f, 500.0f), 0.0f, 0.0f, 0.0f, Vector3(10, 10, 1));
+    m_GameObjects.push_back(terrain5);
+    m_ColliderObjects.push_back(terrain5);
+
+    std::shared_ptr<Terrain>terrain6 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, 0.0f, -500.0f), 0.0f, 0.0f, 0.0f, Vector3(10, 10, 1));
+    m_GameObjects.push_back(terrain6);
+    m_ColliderObjects.push_back(terrain6);
+
+    std::shared_ptr<Terrain>test = std::make_shared<Terrain>("botan", m_d3dDevice.Get(), m_fxFactory, Vector3(200.0f, 10.0f, 100.0f), 0.0f, 0.0f, 0.0f, 0.25f * Vector3::One);
     m_GameObjects.push_back(test);
     m_ColliderObjects.push_back(test);
 
@@ -262,7 +278,7 @@ void Game::Update(DX::StepTimer const& _timer)
         {
             if(startSelected)
             {
-                m_GD->m_GS = GS_PLAY_TPS_CAM;
+                m_GD->m_GS = GS_PLAY_MAIN_CAM;
             }
             else
             {

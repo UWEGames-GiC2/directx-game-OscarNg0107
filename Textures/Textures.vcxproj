@@ -166,6 +166,10 @@
     <ImageContentTask Include="..\Models\texture\TGA\S_hur.bmp" />
     <ImageContentTask Include="..\Models\texture\TGA\S_item.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="..\Models\TexturesCom_SciFiPanels04_1K_albedo.tif" />
+    <ImageContentTask Include="..\Models\TexturesCom_Scifi_Panel_1K_albedo.tif" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

@@ -18,5 +18,7 @@
     <ImageContentTask Include="..\Models\texture\TGA\S_1.bmp" />
     <ImageContentTask Include="..\Models\texture\TGA\S_hur.bmp" />
     <ImageContentTask Include="..\Models\texture\TGA\S_item.bmp" />
+    <ImageContentTask Include="..\Models\TexturesCom_Scifi_Panel_1K_albedo.tif" />
+    <ImageContentTask Include="..\Models\TexturesCom_SciFiPanels04_1K_albedo.tif" />
   </ItemGroup>
 </Project>
