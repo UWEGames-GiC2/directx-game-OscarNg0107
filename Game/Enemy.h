@@ -9,6 +9,8 @@ public:
 	~Enemy();
 
 	virtual void Tick(GameData* _GD) override;
+
+
 	std::vector<std::shared_ptr<Projectile>> projectiles;
 
 protected:
