@@ -97,7 +97,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     float AR = (float)_width / (float)_height;
 
     //example basic 3D stuff
-    std::shared_ptr<Terrain> terrain = std::make_shared<Terrain>("cube2", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f, 0.0f, Vector3(5, 1,5));
+    /*std::shared_ptr<Terrain> terrain = std::make_shared<Terrain>("cube2", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, -10.0f, 0.0f), 0.0f, 0.0f, 0.0f, Vector3(5, 1,5));
     m_GameObjects.push_back(terrain);
     m_ColliderObjects.push_back(terrain);
 
@@ -119,12 +119,26 @@ void Game::Initialize(HWND _window, int _width, int _height)
 
     std::shared_ptr<Terrain>terrain6 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, 0.0f, -500.0f), 0.0f, 0.0f, 0.0f, Vector3(10, 10, 1));
     m_GameObjects.push_back(terrain6);
-    m_ColliderObjects.push_back(terrain6);
+    m_ColliderObjects.push_back(terrain6);*/
 
-    std::shared_ptr<Terrain>test = std::make_shared<Terrain>("botan", m_d3dDevice.Get(), m_fxFactory, Vector3(200.0f, 10.0f, 100.0f), 0.0f, 0.0f, 0.0f, 0.25f * Vector3::One);
-    m_GameObjects.push_back(test);
-    m_ColliderObjects.push_back(test);
 
+    m_mapGrid = std::make_shared<grid>(20.0f, 20.0f, 20, 20);
+    std::cout << m_mapGrid->m_gridmap[10].GetCentre().x << std::endl;
+
+    std::shared_ptr<Terrain>testbox = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, m_mapGrid->m_gridmap[10].GetCentre(), 0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f));
+    m_GameObjects.push_back(testbox);
+    m_ColliderObjects.push_back(testbox);
+
+    for(int i=0 ; i< m_mapGrid->m_walls.size(); ++i)
+    {
+        std::shared_ptr<Terrain>wall = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, m_mapGrid->m_walls[i].GetPos(), 0.0f, 0.0f, 0.0f, Vector3(0.2f, 2.0f, 0.2f));
+        m_GameObjects.push_back(wall);
+        m_ColliderObjects.push_back(wall);
+    }
+
+    std::shared_ptr<Terrain>floor = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, m_mapGrid->GetCentre(), 0.0f, 0.0f, 0.0f, Vector3(10.0f, 0.1f, 10.0f));
+    m_GameObjects.push_back(floor);
+    m_ColliderObjects.push_back(floor);
     
 
     for(size_t i =0; i < 10; i++)

@@ -171,6 +171,15 @@
     <ClInclude Include="mainMenu.h">
       <Filter>Base\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="grid.h">
+      <Filter>Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Base\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -252,6 +261,15 @@
       <Filter>Base\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mainMenu.cpp">
+      <Filter>Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="grid.cpp">
+      <Filter>Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
       <Filter>Base\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
