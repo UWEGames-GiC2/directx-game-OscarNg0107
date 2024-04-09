@@ -19,6 +19,8 @@ public:
 	std::vector<Tile> m_walls;
 
 	Vector3 GetCentre() { return m_centre; }
+	float GetTileWidth();
+	float GetTileDepth();
 
 	
 private:

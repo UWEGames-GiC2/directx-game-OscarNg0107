@@ -76,3 +76,12 @@ grid::~grid()
 {
 
 }
+
+float grid::GetTileWidth()
+{
+	return m_gridmap[0].GetWidth();
+}
+float grid::GetTileDepth()
+{
+	return m_gridmap[0].GetDepth();
+}

@@ -4,7 +4,7 @@
 #include "GameData.h"
 #include <iostream>
 
-Player::Player(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, float _aspectRatio) : CMOGO(_fileName, _pd3dDevice, _EF) 
+Player::Player(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, float _aspectRatio, float _mapTileWidth, float _mapTileDepth) : CMOGO(_fileName, _pd3dDevice, _EF)
 {
 	//any special set up for Player goes here
 	m_fudge = Matrix::CreateRotationY(XM_PI);
@@ -15,6 +15,9 @@ Player::Player(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF,
 	SetPhysicsOn(true);
 
 	test = Ray(Vector3(m_pos.x, m_pos.y + 15.0f, m_pos.z), Vector3::Forward);
+
+	m_mapTileWidth = _mapTileWidth;
+	m_mapTileDepth = _mapTileDepth;
 }
 
 Player::~Player()
@@ -32,7 +35,11 @@ void Player::Tick(GameData* _GD)
 	test.position = m_pos;
 	test.direction = Vector3(x, y, z);
 
-	//std::cout << test.direction.z << std::endl;
+	m_gridPosX = floor(m_pos.x / m_mapTileWidth);
+	m_gridPosY = floor(m_pos.z / m_mapTileDepth);
+
+	std::cout << m_gridPosX << std::endl;
+
 
 	//switch (_GD->m_GS)
 	//{
@@ -78,7 +85,6 @@ void Player::Tick(GameData* _GD)
 	//}
 
 	//FORWARD CONTROL HERE
-
 	Vector3 forwardMove = 40.0f * Vector3::Forward;
 	Matrix rotMove = Matrix::CreateRotationY(m_yaw);
 	forwardMove = Vector3::Transform(forwardMove, rotMove);

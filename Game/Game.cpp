@@ -131,7 +131,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
 
     for(int i=0 ; i< m_mapGrid->m_walls.size(); ++i)
     {
-        std::shared_ptr<Terrain>wall = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, m_mapGrid->m_walls[i].GetPos(), 0.0f, 0.0f, 0.0f, Vector3(0.2f, 2.0f, 0.2f));
+        std::shared_ptr<Terrain>wall = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, m_mapGrid->m_walls[i].GetCentre(), 0.0f, 0.0f, 0.0f, Vector3(0.2f, 2.0f, 0.2f));
         m_GameObjects.push_back(wall);
         m_ColliderObjects.push_back(wall);
     }
@@ -155,7 +155,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects.push_back(m_cam);
 
     //add Player
-    m_Player = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory, AR);
+    m_Player = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory, AR, m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
     m_GameObjects.push_back(m_Player);
     m_PhysicsObjects.push_back(m_Player);
     m_Player->projectiles = m_Projectiles;
@@ -701,14 +701,14 @@ void Game::CheckCollision()
  
         }
         
-        if(m_ColliderObjects[j]->getCollider().Intersects(m_Player->test.position, m_Player->test.direction, dis))
+        /*if(m_ColliderObjects[j]->getCollider().Intersects(m_Player->test.position, m_Player->test.direction, dis))
         {
             std::cout << j << '\n' << dis << std::endl;
         }
         else
         {
             std::cout << "Hello" << std::endl;
-        }
+        }*/
     }
 }
 
