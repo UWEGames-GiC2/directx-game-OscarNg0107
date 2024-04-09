@@ -42,3 +42,36 @@ void GameObject::Tick(GameData* _GD)
 	//zero acceleration ready for the next time round
 	m_acc = Vector3::Zero;
 }
+
+Vector3 GameObject::GetVectorForward()
+{
+	/*float x = cos(m_pitch) * sin(m_yaw);
+	float y = -sin(m_pitch);
+	float z = cos(m_pitch) * cos(m_yaw);
+
+	return Vector3(x, y, z);*/
+
+	return Vector3::Forward;
+}
+
+Vector3 GameObject::GetVectorUp()
+{
+
+	//float x = sin(m_pitch) * sin(m_yaw);
+	//float y = cos(m_pitch);
+	//float z = sin(m_pitch) * cos(m_yaw);
+
+	//return Vector3(x, y, z);
+	return Vector3::Up;
+}
+
+Vector3 GameObject::GetVectorRight()
+{
+
+	//float x = cos(m_yaw);
+	//float y = 0 ;
+	//float z = -sin(m_yaw);
+
+	//return Vector3(x, y, z);
+	return Vector3::Right;
+}

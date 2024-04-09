@@ -27,9 +27,9 @@ public:
 
 	//getters
 	Vector3		GetPos() { return m_pos; }
-	Vector3		GetVectorForward() { return Vector3::Forward; }
-	Vector3		GetVectorUp() { return Vector3::Up; }
-	Vector3		GetVectorRight() { return Vector3::Right; }
+	Vector3		GetVectorForward();
+	Vector3		GetVectorUp();
+	Vector3		GetVectorRight();
 	Vector3		GetScale() { return m_scale; }
 
 	float		GetPitch() { return m_pitch; }

@@ -25,6 +25,15 @@ Player::~Player()
 
 void Player::Tick(GameData* _GD)
 {
+	float x = cos(m_pitch) * sin(m_yaw);
+	float y = -sin(m_pitch);
+	float z = cos(m_pitch) * cos(m_yaw);
+
+	test.position = m_pos;
+	test.direction = Vector3(x, y, z);
+
+	//std::cout << test.direction.z << std::endl;
+
 	//switch (_GD->m_GS)
 	//{
 	//case GS_PLAY_MAIN_CAM:
@@ -69,6 +78,7 @@ void Player::Tick(GameData* _GD)
 	//}
 
 	//FORWARD CONTROL HERE
+
 	Vector3 forwardMove = 40.0f * Vector3::Forward;
 	Matrix rotMove = Matrix::CreateRotationY(m_yaw);
 	forwardMove = Vector3::Transform(forwardMove, rotMove);

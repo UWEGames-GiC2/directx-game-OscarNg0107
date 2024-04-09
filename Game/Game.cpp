@@ -690,6 +690,7 @@ void Game::ReadInput()
 
 void Game::CheckCollision()
 {
+    float dis;
     for (int i = 0; i < m_PhysicsObjects.size(); i++) for (int j = 0; j < m_ColliderObjects.size(); j++)
     {
         if (m_PhysicsObjects[i]->Intersects(*m_ColliderObjects[j])) //std::cout << "Collision Detected!" << std::endl;
@@ -699,11 +700,15 @@ void Game::CheckCollision()
             m_PhysicsObjects[i]->SetPos(pos - eject_vect);
  
         }
-        /*float dis = 10.0f;
-        if(m_Player->test.Intersects(m_ColliderObjects[j]->getCollider(), dis))
+        
+        if(m_ColliderObjects[j]->getCollider().Intersects(m_Player->test.position, m_Player->test.direction, dis))
         {
-            std::cout << "Hi" << std::endl;
-        }*/
+            std::cout << j << '\n' << dis << std::endl;
+        }
+        else
+        {
+            std::cout << "Hello" << std::endl;
+        }
     }
 }
 
