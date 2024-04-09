@@ -27,6 +27,7 @@ public:
 
 	std::shared_ptr <CamTarget> m_CamTargetP;
 
+	Ray test;
 protected:
 	
 };

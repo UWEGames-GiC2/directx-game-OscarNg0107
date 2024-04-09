@@ -321,7 +321,7 @@ void Game::Update(DX::StepTimer const& _timer)
         //update all objects
         for (std::vector<std::shared_ptr<GameObject>>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
         {
-            (*it)->Tick(m_GD.get());
+            (*it)->Tick(m_GD.get()); 
         }
         for (std::vector<std::shared_ptr<GameObject2D>>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
         {
@@ -336,6 +336,8 @@ void Game::Update(DX::StepTimer const& _timer)
         CheckCollision();
         CheckProjectileCollision();
     }
+
+   
 }
 
 // Draws the scene.
@@ -695,7 +697,13 @@ void Game::CheckCollision()
             XMFLOAT3 eject_vect = Collision::ejectionCMOGO(*m_PhysicsObjects[i], *m_ColliderObjects[j]);
             auto pos = m_PhysicsObjects[i]->GetPos();
             m_PhysicsObjects[i]->SetPos(pos - eject_vect);
+ 
         }
+        /*float dis = 10.0f;
+        if(m_Player->test.Intersects(m_ColliderObjects[j]->getCollider(), dis))
+        {
+            std::cout << "Hi" << std::endl;
+        }*/
     }
 }
 

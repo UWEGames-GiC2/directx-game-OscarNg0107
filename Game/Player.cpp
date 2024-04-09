@@ -13,6 +13,8 @@ Player::Player(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF,
 
 	SetDrag(0.7);
 	SetPhysicsOn(true);
+
+	test = Ray(Vector3(m_pos.x, m_pos.y + 15.0f, m_pos.z), Vector3::Forward);
 }
 
 Player::~Player()
