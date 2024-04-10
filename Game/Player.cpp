@@ -18,6 +18,11 @@ Player::Player(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF,
 
 	m_mapTileWidth = _mapTileWidth;
 	m_mapTileDepth = _mapTileDepth;
+
+	int m_gridPosX = (int)floor(m_pos.x / m_mapTileWidth);
+	int m_gridPosY = (int)floor(m_pos.z / m_mapTileDepth);
+
+	m_gridPos = { m_gridPosX, m_gridPosY };
 }
 
 Player::~Player()
@@ -35,8 +40,10 @@ void Player::Tick(GameData* _GD)
 	test.position = m_pos;
 	test.direction = Vector3(x, y, z);
 
-	m_gridPosX = floor(m_pos.x / m_mapTileWidth);
-	m_gridPosY = floor(m_pos.z / m_mapTileDepth);
+	int m_gridPosX = (int)floor(m_pos.x / m_mapTileWidth);
+	int m_gridPosY = (int)floor(m_pos.z / m_mapTileDepth);
+
+	m_gridPos = { m_gridPosX, m_gridPosY };
 
 	std::cout << m_gridPosX << std::endl;
 

@@ -54,13 +54,13 @@ grid::grid(float _width, float _depth, int m, int n)
 			v = Vector3(x, 0.0f, z);
 			if(map[j][i] == 0)
 			{
-				Tile tile = Tile(Vector3(x, 0.0f, z), Vector3::One, _width, _depth, true);
+				Tile tile = Tile(j, i,Vector3(x, 0.0f, z), Vector3::One, _width, _depth, true);
 				m_gridmap.push_back(tile);
 				m_pos.push_back(v);
 			}
 			else
 			{
-				Tile tile = Tile(Vector3(x, 0.0f, z), Vector3::One, _width, _depth, false);
+				Tile tile = Tile(j, i, Vector3(x, 0.0f, z), Vector3::One, _width, _depth, false);
 				m_gridmap.push_back(tile);
 				m_pos.push_back(v);
 				m_walls.push_back(tile);
@@ -84,4 +84,21 @@ float grid::GetTileWidth()
 float grid::GetTileDepth()
 {
 	return m_gridmap[0].GetDepth();
+}
+
+std::vector<GridLocation>& grid::Neighbours(GridLocation _currentTile)
+{
+	GridLocation direction[4] = { {1,0} ,{0,1},{-1,0},{0,-1} };
+	std::vector<GridLocation> result;
+
+	for (int i = 0; i < 4.; ++i)
+	{
+		GridLocation neighbour = { _currentTile.x + direction[i].x, _currentTile.y + direction[i].y };
+		if (m_gridmap[neighbour.x + neighbour.y * 20].isReachable() && neighbour.x >= 0 && neighbour.x <= 20 && neighbour.y >= 0 && neighbour.y <= 20)
+		{
+			result.push_back(neighbour);
+		}
+	}
+
+	return result;
 }

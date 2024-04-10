@@ -4,9 +4,11 @@
 #include <memory>
 #include "SimpleMath.h"
 #include"Tile.h"
+#include"GridLocation.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
+
 
 class grid
 {
@@ -17,6 +19,8 @@ public:
 	std::vector<Tile> m_gridmap;
 
 	std::vector<Tile> m_walls;
+
+	std::vector<GridLocation>& Neighbours(GridLocation _currentTile);
 
 	Vector3 GetCentre() { return m_centre; }
 	float GetTileWidth();

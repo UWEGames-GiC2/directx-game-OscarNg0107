@@ -180,6 +180,12 @@
     <ClInclude Include="Enemy.h">
       <Filter>Base\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Pathfinding.h">
+      <Filter>Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GridLocation.h">
+      <Filter>Base\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -270,6 +276,9 @@
       <Filter>Base\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
+      <Filter>Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pathfinding.cpp">
       <Filter>Base\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

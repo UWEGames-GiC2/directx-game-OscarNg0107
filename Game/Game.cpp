@@ -18,6 +18,7 @@
 #include "CMOGO.h"
 #include <DirectXCollision.h>
 #include "Collision.h"
+#include "GridLocation.h"
 
 extern void ExitGame() noexcept;
 
@@ -97,35 +98,11 @@ void Game::Initialize(HWND _window, int _width, int _height)
     float AR = (float)_width / (float)_height;
 
     //example basic 3D stuff
-    /*std::shared_ptr<Terrain> terrain = std::make_shared<Terrain>("cube2", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, -10.0f, 0.0f), 0.0f, 0.0f, 0.0f, Vector3(5, 1,5));
-    m_GameObjects.push_back(terrain);
-    m_ColliderObjects.push_back(terrain);
-
-    std::shared_ptr<Terrain>terrain2 = std::make_shared<Terrain>("cube2", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, 100.0f, 0.0f), 0.0f, 0.0f, 0.0f, Vector3(5, 1, 5));
-    m_GameObjects.push_back(terrain2);
-    m_ColliderObjects.push_back(terrain2);
-
-    std::shared_ptr<Terrain>terrain3 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(500.0f, 0.0f, 0.0f), 0.0f, 0.0f, 0.0f, Vector3(1,10,10));
-    m_GameObjects.push_back(terrain3);
-    m_ColliderObjects.push_back(terrain3);
-
-    std::shared_ptr<Terrain>terrain4 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(-500.0f, 0.0f, 0.0f), 0.0f, 0.0f, 0.0f, Vector3(1, 10, 10));
-    m_GameObjects.push_back(terrain4);
-    m_ColliderObjects.push_back(terrain4);
-
-    std::shared_ptr<Terrain>terrain5 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, 0.0f, 500.0f), 0.0f, 0.0f, 0.0f, Vector3(10, 10, 1));
-    m_GameObjects.push_back(terrain5);
-    m_ColliderObjects.push_back(terrain5);
-
-    std::shared_ptr<Terrain>terrain6 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(0.0f, 0.0f, -500.0f), 0.0f, 0.0f, 0.0f, Vector3(10, 10, 1));
-    m_GameObjects.push_back(terrain6);
-    m_ColliderObjects.push_back(terrain6);*/
-
 
     m_mapGrid = std::make_shared<grid>(20.0f, 20.0f, 20, 20);
     std::cout << m_mapGrid->m_gridmap[10].GetCentre().x << std::endl;
 
-    std::shared_ptr<Terrain>testbox = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, m_mapGrid->m_gridmap[10].GetCentre(), 0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f));
+    std::shared_ptr<Terrain>testbox = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[10].GetCentre().x , 20.0f, m_mapGrid->m_gridmap[10].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f));
     m_GameObjects.push_back(testbox);
     m_ColliderObjects.push_back(testbox);
 
@@ -159,6 +136,11 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects.push_back(m_Player);
     m_PhysicsObjects.push_back(m_Player);
     m_Player->projectiles = m_Projectiles;
+
+    testEnemy = std::make_shared<Enemy>("table", m_d3dDevice.Get(), m_fxFactory, AR, Vector3(m_mapGrid->m_gridmap[10].GetCentre().x, 20.0f, m_mapGrid->m_gridmap[10].GetCentre().z),0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f) , m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
+    m_GameObjects.push_back(testEnemy);
+    auto came_from = testEnemy->pathfinding(*m_mapGrid, testEnemy->m_gridPos, m_Player->GetGridPos());
+    //m_PhysicsObjects.push_back(testEnemy);
 
     std::shared_ptr<CamTarget>camtarget = std::make_shared<CamTarget>("table", m_d3dDevice.Get(), m_fxFactory, 10.0f, 10.0f, m_Player);
     m_GameObjects.push_back(camtarget);
@@ -690,7 +672,7 @@ void Game::ReadInput()
 
 void Game::CheckCollision()
 {
-    float dis;
+    float dis =0.0f;
     for (int i = 0; i < m_PhysicsObjects.size(); i++) for (int j = 0; j < m_ColliderObjects.size(); j++)
     {
         if (m_PhysicsObjects[i]->Intersects(*m_ColliderObjects[j])) //std::cout << "Collision Detected!" << std::endl;

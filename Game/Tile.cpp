@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "Tile.h"
 
-Tile::Tile(Vector3 _pos, Vector3 _scale, float _width, float _depth, bool _reachable)
+Tile::Tile(int _mapPosX, int _mapPosZ, Vector3 _pos, Vector3 _scale, float _width, float _depth, bool _reachable)
 {
+	m_mapPos.x = _mapPosX;
+	m_mapPos.y = _mapPosZ;
 	m_pos = _pos;
 	m_scale = _scale;
 	m_width = _width;
@@ -16,4 +18,6 @@ Tile::~Tile()
 {
 
 }
+
+
 

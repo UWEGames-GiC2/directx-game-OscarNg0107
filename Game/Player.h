@@ -4,6 +4,7 @@
 #include "Projectile.h"
 #include "FPSCamera.h"
 #include "CamTarget.h"
+#include"GridLocation.h"
 
 //=================================================================
 //Base Player Class (i.e. a GO the player controls)
@@ -21,6 +22,8 @@ public:
 	void AddCameraChild(std::shared_ptr<FPSCamera> _child);
 	void AddCamTargetChild(std::shared_ptr<CamTarget> _child);
 
+	GridLocation& GetGridPos() { return m_gridPos; }
+
 	std::vector<std::shared_ptr<Projectile>> projectiles;
 
 	std::shared_ptr <FPSCamera> m_FPScamP;
@@ -29,10 +32,10 @@ public:
 
 	Ray test;
 protected:
-	float m_gridPosX;
-	float m_gridPosY;
+	GridLocation m_gridPos;
 	float m_mapTileWidth;
 	float m_mapTileDepth;
+
 };
 
 #endif
