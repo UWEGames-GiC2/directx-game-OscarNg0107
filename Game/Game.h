@@ -35,6 +35,7 @@ class Projectile;
 class mainMenu;
 class gird;
 class Enemy;
+class Trigger;
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
@@ -126,6 +127,7 @@ private:
 
     std::vector< std::shared_ptr<CMOGO>> m_ColliderObjects;
     std::vector< std::shared_ptr<CMOGO>> m_PhysicsObjects;
+    std::vector<std::shared_ptr<Trigger>> m_TriggerObjects;
 
     std::vector< std::shared_ptr<CMOGO>>m_PlayerProjectiles;
     std::vector < std::shared_ptr<Projectile>> m_Projectiles;
@@ -142,6 +144,7 @@ private:
 
     void CheckCollision();
     void CheckProjectileCollision();
+    void CheckTriggerCollision();
                                          
     //sound stuff
 	//This uses a simple system, but a better pipeline can be used using Wave Banks

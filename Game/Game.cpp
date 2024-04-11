@@ -126,6 +126,10 @@ void Game::Initialize(HWND _window, int _width, int _height)
         m_Projectiles.push_back(pProjectile);
     }
 
+    std::shared_ptr<Trigger> testend = std::make_shared<Trigger>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[1579].GetCentre().x, 20.0f, m_mapGrid->m_gridmap[1579].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(1.0f, 1.0f, 1.0f));
+    m_TriggerObjects.push_back(testend);
+    m_GameObjects.push_back(testend);
+
     //create a base camera
     m_cam = std::make_shared<Camera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, Vector3::UnitY, Vector3::Zero);
     m_cam->SetPos(Vector3(0.0f, 200.0f, 200.0f));
@@ -136,11 +140,6 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects.push_back(m_Player);
     m_PhysicsObjects.push_back(m_Player);
     m_Player->projectiles = m_Projectiles;
-
-    testEnemy = std::make_shared<Enemy>("table", m_d3dDevice.Get(), m_fxFactory, AR, Vector3(m_mapGrid->m_gridmap[10].GetCentre().x, 20.0f, m_mapGrid->m_gridmap[10].GetCentre().z),0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f) , m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
-    m_GameObjects.push_back(testEnemy);
-    auto came_from = testEnemy->pathfinding(*m_mapGrid, testEnemy->m_gridPos, m_Player->GetGridPos());
-    //m_PhysicsObjects.push_back(testEnemy);
 
     std::shared_ptr<CamTarget>camtarget = std::make_shared<CamTarget>("table", m_d3dDevice.Get(), m_fxFactory, 10.0f, 10.0f, m_Player);
     m_GameObjects.push_back(camtarget);
@@ -153,6 +152,13 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects.push_back(m_FPScam);
     m_Player->AddCameraChild(m_FPScam);
    
+
+    testEnemy = std::make_shared<Enemy>("table", m_d3dDevice.Get(), m_fxFactory, AR, Vector3(m_mapGrid->m_gridmap[10].GetCentre().x, 20.0f, m_mapGrid->m_gridmap[10].GetCentre().z),0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f) , m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
+    m_GameObjects.push_back(testEnemy);
+    //testEnemy->pathfinding(*m_mapGrid, testEnemy->m_gridPos, m_Player->GetGridPos());
+    m_PhysicsObjects.push_back(testEnemy);
+    
+
 
     //create DrawData struct and populate its pointers
     m_DD = std::make_unique<DrawData>();
@@ -317,6 +323,7 @@ void Game::Update(DX::StepTimer const& _timer)
 
         CheckCollision();
         CheckProjectileCollision();
+        CheckTriggerCollision();
     }
 
    
@@ -704,4 +711,16 @@ void Game::CheckProjectileCollision()
             m_Projectiles[i]->SetActive(false);
         }
     }
+}
+
+void Game::CheckTriggerCollision()
+{
+    for (int j = 0; j < m_TriggerObjects.size(); j++)
+    {
+        if (m_Player->Intersects(*m_TriggerObjects[j]))
+        {
+            m_TriggerObjects[j]->OnIntersect();
+        }
+    }
+    
 }

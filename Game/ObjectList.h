@@ -17,6 +17,7 @@
 #include "Projectile.h"
 #include "CamTarget.h"
 #include "Enemy.h"
+#include"Trigger.h"
 
 //VBGO examples
 #include "fileVBGO.h"

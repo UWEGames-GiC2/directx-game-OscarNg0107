@@ -109,6 +109,20 @@ CMOGO::~CMOGO()
 
 void CMOGO::Tick(GameData* _GD)
 {
+	if (m_isMoving) 
+	{
+		std::cout << m_pos.z << std::endl;
+		if (m_pos.x + m_acc.x > m_destination.x - m_acceptanceRadius &&
+			m_pos.x + m_acc.x < m_destination.x + m_acceptanceRadius &&
+			m_pos.z + m_acc.z > m_destination.z - m_acceptanceRadius && 
+			m_pos.z + m_acc.z < m_destination.z + m_acceptanceRadius)
+		{
+			SetAcceleration(Vector3::Zero);
+			std::cout << "Arrived" << std::endl;
+			m_canMove = true;
+			m_isMoving = false;
+		}
+	}
 	GameObject::Tick(_GD);
 }
 
@@ -172,4 +186,26 @@ bool CMOGO::Intersects(const CMOGO& other) const
 	other.m_collider.Transform(c2, other.m_worldMat);
 
 	return (c1.Intersects(c2));
+}
+
+void CMOGO::MoveTo(Vector3 _destination, float _speed, float _acceptanceRadius)
+{
+	if(m_pos != _destination)
+	{
+		if(m_canMove)
+	{
+		m_destination = _destination;
+		m_acceptanceRadius = _acceptanceRadius;
+		Vector3 dir = _destination - m_pos;
+		dir.Normalize();
+		dir *= _speed;
+		SetDrag(0.01f);
+		SetPhysicsOn(true);
+		SetAcceleration(dir);
+		//std::cout << m_pos.x << " " << m_pos.z << std::endl;
+		m_isMoving = true;
+		m_canMove = false;
+	}
+	}
+	
 }

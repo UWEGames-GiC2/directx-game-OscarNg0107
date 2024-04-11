@@ -45,7 +45,7 @@ void Player::Tick(GameData* _GD)
 
 	m_gridPos = { m_gridPosX, m_gridPosY };
 
-	std::cout << m_gridPosX << std::endl;
+	//std::cout << m_gridPosX << std::endl;
 
 
 	//switch (_GD->m_GS)

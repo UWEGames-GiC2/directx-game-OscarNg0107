@@ -23,7 +23,8 @@ public:
 	virtual void Tick(GameData* _GD) override;
 	virtual void Draw(DrawData* _DD) override;
 
-	virtual bool Intersects(const CMOGO& other) const;
+	virtual bool Intersects(const CMOGO& other) const; 
+	void MoveTo(Vector3 _destination, float _speed, float _acceptanceRadius);
 
 	BoundingOrientedBox&		getCollider()		noexcept { return m_collider; }
 	const BoundingOrientedBox&	getCollider() const noexcept { return m_collider; }
@@ -39,6 +40,10 @@ protected:
 	//needs a slightly different raster state that the VBGOs so create one and let them all use it
 	static ID3D11RasterizerState*  s_pRasterState;
 	static int m_count;
+	bool m_canMove = true;
+	bool m_isMoving = false;
+	Vector3 m_destination;
+	float m_acceptanceRadius = 0.0f;
 };
 
 #endif
