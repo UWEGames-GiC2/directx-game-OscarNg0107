@@ -31,7 +31,7 @@ Enemy::~Enemy()
 
 void Enemy::Tick(GameData* _GD)
 {
-	MoveTo(Vector3(300.0f, 20.0f, 300.0f), 1500.0f, 0.1f);
+	MoveTo(Vector3(300.0f, 20.0f, 300.0f), 1500.0f, 0.2f);
 	CMOGO::Tick(_GD);
 }
 

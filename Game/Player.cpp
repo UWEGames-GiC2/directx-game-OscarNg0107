@@ -22,7 +22,7 @@ Player::Player(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF,
 	int m_gridPosX = (int)floor(m_pos.x / m_mapTileWidth);
 	int m_gridPosY = (int)floor(m_pos.z / m_mapTileDepth);
 
-	m_gridPos = { m_gridPosX, m_gridPosY };
+	m_gridPos = { m_gridPosX, m_gridPosY };	
 }
 
 Player::~Player()

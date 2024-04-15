@@ -112,10 +112,7 @@ void CMOGO::Tick(GameData* _GD)
 	if (m_isMoving) 
 	{
 		std::cout << m_pos.z << std::endl;
-		if (m_pos.x + m_acc.x > m_destination.x - m_acceptanceRadius &&
-			m_pos.x + m_acc.x < m_destination.x + m_acceptanceRadius &&
-			m_pos.z + m_acc.z > m_destination.z - m_acceptanceRadius && 
-			m_pos.z + m_acc.z < m_destination.z + m_acceptanceRadius)
+		if (reachDestination(m_destination, m_acceptanceRadius))
 		{
 			SetAcceleration(Vector3::Zero);
 			std::cout << "Arrived" << std::endl;
@@ -190,22 +187,33 @@ bool CMOGO::Intersects(const CMOGO& other) const
 
 void CMOGO::MoveTo(Vector3 _destination, float _speed, float _acceptanceRadius)
 {
-	if(m_pos != _destination)
+	if(!reachDestination(_destination, _acceptanceRadius))
 	{
 		if(m_canMove)
+		{
+			m_destination = _destination;
+			m_acceptanceRadius = _acceptanceRadius;
+			Vector3 dir = _destination - m_pos;
+			dir.Normalize();
+			dir *= _speed;
+			SetDrag(0.01f);
+			SetPhysicsOn(true);
+			SetAcceleration(dir);
+			//std::cout << m_pos.x << " " << m_pos.z << std::endl;
+			m_isMoving = true;
+			m_canMove = false;
+		}
+	}
+}
+
+bool CMOGO::reachDestination(Vector3 _destination, float _acceptanceRadius)
+{
+	if (m_pos.x + m_acc.x > _destination.x - _acceptanceRadius &&
+		m_pos.x + m_acc.x < _destination.x + _acceptanceRadius &&
+		m_pos.z + m_acc.z > _destination.z - _acceptanceRadius &&
+		m_pos.z + m_acc.z < _destination.z + _acceptanceRadius)
 	{
-		m_destination = _destination;
-		m_acceptanceRadius = _acceptanceRadius;
-		Vector3 dir = _destination - m_pos;
-		dir.Normalize();
-		dir *= _speed;
-		SetDrag(0.01f);
-		SetPhysicsOn(true);
-		SetAcceleration(dir);
-		//std::cout << m_pos.x << " " << m_pos.z << std::endl;
-		m_isMoving = true;
-		m_canMove = false;
+		return true;
 	}
-	}
-	
+	return false;
 }
