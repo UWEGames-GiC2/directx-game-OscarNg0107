@@ -8,6 +8,7 @@
 #include "gameobject.h"
 #include "Model.h"
 #include <string>
+#include <queue>
 
 using namespace std;
 using namespace DirectX;
@@ -24,6 +25,7 @@ public:
 	virtual void Draw(DrawData* _DD) override;
 
 	virtual bool Intersects(const CMOGO& other) const; 
+	void AddDestination(Vector3 _destination);
 	void MoveTo(Vector3 _destination, float _speed, float _acceptanceRadius);
 	bool reachDestination(Vector3 _destination, float _acceptanceRadius);
 
@@ -43,8 +45,11 @@ protected:
 	static int m_count;
 	bool m_canMove = true;
 	bool m_isMoving = false;
-	Vector3 m_destination;
+	bool m_isNPC = false;
+	//Vector3 m_destination;
 	float m_acceptanceRadius = 0.0f;
+
+	std::queue<Vector3> destinations;
 };
 
 #endif

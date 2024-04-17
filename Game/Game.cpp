@@ -155,7 +155,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
 
     testEnemy = std::make_shared<Enemy>("table", m_d3dDevice.Get(), m_fxFactory, AR, Vector3(m_mapGrid->m_gridmap[10].GetCentre().x, 20.0f, m_mapGrid->m_gridmap[10].GetCentre().z),0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f) , m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
     m_GameObjects.push_back(testEnemy);
-    //testEnemy->pathfinding(*m_mapGrid, testEnemy->m_gridPos, m_Player->GetGridPos());
+    testEnemy->pathfinding(*m_mapGrid, testEnemy->m_gridPos, m_Player->GetGridPos());
     m_PhysicsObjects.push_back(testEnemy);
     
 

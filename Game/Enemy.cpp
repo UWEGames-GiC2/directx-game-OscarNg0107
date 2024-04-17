@@ -9,6 +9,7 @@ Enemy::Enemy(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF,fl
 	m_roll = _roll;
 	m_yaw = _yaw;
 	m_scale = _scale;
+	m_isNPC = true;
 
 	GameObject::Tick(nullptr); //update my world_transform
 
@@ -22,6 +23,8 @@ Enemy::Enemy(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF,fl
 	int m_gridPosY = floor(m_pos.z / m_mapTileDepth);
 
 	m_gridPos = { m_gridPosX, m_gridPosY };
+	AddDestination(Vector3(300.0f, 20.0f, 300.0f));
+	AddDestination(Vector3(250.0f, 20.0f, 250.0f));
 	
 }
 
@@ -31,7 +34,7 @@ Enemy::~Enemy()
 
 void Enemy::Tick(GameData* _GD)
 {
-	MoveTo(Vector3(300.0f, 20.0f, 300.0f), 1500.0f, 0.2f);
+	
 	CMOGO::Tick(_GD);
 }
 

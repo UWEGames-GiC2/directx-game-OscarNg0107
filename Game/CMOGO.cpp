@@ -109,17 +109,26 @@ CMOGO::~CMOGO()
 
 void CMOGO::Tick(GameData* _GD)
 {
-	if (m_isMoving) 
+
+	if(m_isNPC)
 	{
-		std::cout << m_pos.z << std::endl;
-		if (reachDestination(m_destination, m_acceptanceRadius))
+		std::cout << "Pos.z: " << m_pos.z << std::endl;
+		if(!destinations.empty())
 		{
-			SetAcceleration(Vector3::Zero);
-			std::cout << "Arrived" << std::endl;
-			m_canMove = true;
-			m_isMoving = false;
+			MoveTo(destinations.front(), 1500.0f, 0.2f);
+			if (reachDestination(destinations.front(), m_acceptanceRadius))
+			{
+				destinations.pop();
+				SetAcceleration(Vector3::Zero);
+				m_canMove = true;
+				std::cout << "Arrived" << std::endl;
+			}
 		}
 	}
+	
+		
+		
+	
 	GameObject::Tick(_GD);
 }
 
@@ -185,13 +194,17 @@ bool CMOGO::Intersects(const CMOGO& other) const
 	return (c1.Intersects(c2));
 }
 
+void CMOGO::AddDestination(Vector3 _destination)
+{
+	destinations.push(_destination);
+}
+
 void CMOGO::MoveTo(Vector3 _destination, float _speed, float _acceptanceRadius)
 {
 	if(!reachDestination(_destination, _acceptanceRadius))
 	{
 		if(m_canMove)
 		{
-			m_destination = _destination;
 			m_acceptanceRadius = _acceptanceRadius;
 			Vector3 dir = _destination - m_pos;
 			dir.Normalize();
@@ -200,10 +213,11 @@ void CMOGO::MoveTo(Vector3 _destination, float _speed, float _acceptanceRadius)
 			SetPhysicsOn(true);
 			SetAcceleration(dir);
 			//std::cout << m_pos.x << " " << m_pos.z << std::endl;
-			m_isMoving = true;
 			m_canMove = false;
 		}
+		
 	}
+
 }
 
 bool CMOGO::reachDestination(Vector3 _destination, float _acceptanceRadius)
