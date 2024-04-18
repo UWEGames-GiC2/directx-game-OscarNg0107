@@ -18,17 +18,6 @@
 #include <algorithm>
 #include <cstdlib>
 
-namespace std {
-	/* implement hash function so we can put GridLocation into an unordered_set */
-	template <>
-	struct hash<std::vector<int>>
-	{
-		std::size_t operator()(const std::vector<int>& id) const noexcept {
-			// NOTE: better to use something like boost hash_combine
-			return std::hash<int>()(id[0] ^ (id[1] << 16));
-		}
-	};
-}
 
 class Pathfinding
 {
