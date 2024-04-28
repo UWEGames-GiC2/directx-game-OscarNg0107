@@ -45,6 +45,11 @@ void Player::Tick(GameData* _GD)
 
 	m_gridPos = { m_gridPosX, m_gridPosY };
 
+	if(m_isFalling)
+	{
+		m_acc += Vector3::Down * 100.0f;
+	}
+
 	//std::cout << m_gridPosX << std::endl;
 
 
@@ -180,4 +185,9 @@ void Player::AddCameraChild(std::shared_ptr<FPSCamera> _child)
 void Player::AddCamTargetChild(std::shared_ptr<CamTarget> _child)
 {
 	m_CamTargetP = _child;
+}
+
+void Player::Jump()
+{
+	
 }

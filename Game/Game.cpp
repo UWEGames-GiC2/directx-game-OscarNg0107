@@ -130,6 +130,14 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_TriggerObjects.push_back(testend);
     m_GameObjects.push_back(testend);
 
+    std::shared_ptr<TriggeringDoor> door = std::make_shared<TriggeringDoor>(m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[92].GetCentre().x, 20.0f, m_mapGrid->m_gridmap[92].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(1.0f, 1.0f, 1.0f), false);
+    m_GameObjects.push_back(door);
+    m_ColliderObjects.push_back(door);
+
+    std::shared_ptr<Trigger> doorTrigger = std::make_shared<Trigger>("table", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[292].GetCentre().x, 100.0f, m_mapGrid->m_gridmap[292].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(1.0f, 1.0f, 1.0f));
+    m_ShootToTriggerObjects.push_back(doorTrigger);
+    m_GameObjects.push_back(doorTrigger);
+
     //create a base camera
     m_cam = std::make_shared<Camera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, Vector3::UnitY, Vector3::Zero);
     m_cam->SetPos(Vector3(0.0f, 200.0f, 200.0f));
@@ -137,6 +145,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
 
     //add Player
     m_Player = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory, AR, m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
+    m_Player.get()->SetPos(Vector3(800.0f,100.0f, 610.0f));
     m_GameObjects.push_back(m_Player);
     m_PhysicsObjects.push_back(m_Player);
     m_Player->projectiles = m_Projectiles;
@@ -153,10 +162,10 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_Player->AddCameraChild(m_FPScam);
    
 
-    testEnemy = std::make_shared<Enemy>("table", m_d3dDevice.Get(), m_fxFactory, AR, Vector3(m_mapGrid->m_gridmap[10].GetCentre().x, 20.0f, m_mapGrid->m_gridmap[10].GetCentre().z),0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f) , m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
-    m_GameObjects.push_back(testEnemy);
-    testEnemy->pathfinding(*m_mapGrid, testEnemy->m_gridPos, m_Player->GetGridPos());
-    m_PhysicsObjects.push_back(testEnemy);
+    //testEnemy = std::make_shared<Enemy>("table", m_d3dDevice.Get(), m_fxFactory, AR, Vector3(m_mapGrid->m_gridmap[10].GetCentre().x, 20.0f, m_mapGrid->m_gridmap[10].GetCentre().z),0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f) , m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
+    //m_GameObjects.push_back(testEnemy);
+    ////testEnemy->pathfinding(*m_mapGrid, testEnemy->m_gridPos, m_Player->GetGridPos());
+    //m_PhysicsObjects.push_back(testEnemy);
     
 
 
@@ -290,7 +299,7 @@ void Game::Update(DX::StepTimer const& _timer)
 
     }
 
-    else
+    else if(m_GD->m_GS == GS_PLAY_MAIN_CAM)
     {
     //upon space bar switch camera state
         //see docs here for what's going on: https://github.com/Microsoft/DirectXTK/wiki/Keyboard
@@ -305,6 +314,7 @@ void Game::Update(DX::StepTimer const& _timer)
                 m_GD->m_GS = GS_PLAY_MAIN_CAM;
             }
         }
+
 
         //update all objects
         for (std::vector<std::shared_ptr<GameObject>>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
@@ -722,5 +732,32 @@ void Game::CheckTriggerCollision()
             m_TriggerObjects[j]->OnIntersect();
         }
     }
-    
+
+    for (int i = 0; i < m_ShootToTriggerObjects.size(); i++)
+    {
+        for (int j = 0; j < m_Projectiles.size(); j++)
+        {
+            if (m_Projectiles[j]->GetIsActive() && m_Projectiles[j]->Intersects(*m_ShootToTriggerObjects[i]))
+            {
+                m_TriggerObjects[i]->OnIntersect();
+                m_Projectiles[j]->SetActive(false);
+            }
+        }
+    }
 }
+
+void Game::CheckTriggerProjectileCollision()
+{
+    for (int i = 0; i < m_ShootToTriggerObjects.size(); i++)
+        {
+        for (int j = 0; j < m_Projectiles.size(); j++)
+        {
+            if (m_Projectiles[j]->GetIsActive() && m_Projectiles[j]->Intersects(*m_ShootToTriggerObjects[i]))
+            {
+                m_TriggerObjects[i]->OnIntersect();
+                m_Projectiles[j]->SetActive(false);
+            }
+        }
+    }
+}
+

@@ -5,6 +5,7 @@
 #include "grid.h"
 #include "Player.h"
 #include "GridLocation.h"
+#include "grid.h";
 
 #include <iostream>
 #include <iomanip>
@@ -35,7 +36,11 @@ class Pathfinding
 public:
 	Pathfinding();
 	~Pathfinding();
-	template<typename Location, typename Graph> std::unordered_map<Location, Location> breadth_first_search(Graph& _graph, Location& _start, Location& _destination);
+	std::unordered_map<GridLocation, GridLocation> breadth_first_search(grid& _gameMap, GridLocation& _start, GridLocation& _destination);
+	std::unordered_map<GridLocation, GridLocation> retrace_path(std::unordered_map<GridLocation, GridLocation>& _closed, GridLocation& _destination, GridLocation& _start);
+
+
+	std::vector<GridLocation> m_path;
 };
 
 #endif

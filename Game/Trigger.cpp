@@ -24,7 +24,16 @@ Trigger::~Trigger()
 	
 }
 
-void Trigger::OnIntersect()
+void Trigger::OnIntersect(TriggeringPlatform& _platforms)
 {
-	std::cout << "Triggering" << std::endl;
+	
+		std::cout << "Triggering" << std::endl;
+		_platforms.Triggered();
+	
 }
+
+bool Trigger::OnIntersect()
+{
+	return true;
+}
+

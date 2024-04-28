@@ -189,6 +189,12 @@
     <ClInclude Include="Trigger.h">
       <Filter>Base\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TriggeringPlatform.h">
+      <Filter>Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TriggeringDoor.h">
+      <Filter>Base\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -285,6 +291,12 @@
       <Filter>Base\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Trigger.cpp">
+      <Filter>Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TriggeringPlatform.cpp">
+      <Filter>Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TriggeringDoor.cpp">
       <Filter>Base\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

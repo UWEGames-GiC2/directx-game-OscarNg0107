@@ -110,11 +110,12 @@ CMOGO::~CMOGO()
 void CMOGO::Tick(GameData* _GD)
 {
 
-	if(m_isNPC)
+	if(m_isMoveable)
 	{
-		std::cout << "Pos.z: " << m_pos.z << std::endl;
+		//std::cout << "Pos.y: " << m_pos.y << std::endl;
 		if(!destinations.empty())
 		{
+			std::cout << "moving" << std::endl;
 			MoveTo(destinations.front(), 1500.0f, 0.2f);
 			if (reachDestination(destinations.front(), m_acceptanceRadius))
 			{
@@ -225,7 +226,9 @@ bool CMOGO::reachDestination(Vector3 _destination, float _acceptanceRadius)
 	if (m_pos.x + m_acc.x > _destination.x - _acceptanceRadius &&
 		m_pos.x + m_acc.x < _destination.x + _acceptanceRadius &&
 		m_pos.z + m_acc.z > _destination.z - _acceptanceRadius &&
-		m_pos.z + m_acc.z < _destination.z + _acceptanceRadius)
+		m_pos.z + m_acc.z < _destination.z + _acceptanceRadius &&
+		m_pos.y + m_acc.y > _destination.y - _acceptanceRadius &&
+		m_pos.y + m_acc.y < _destination.y + _acceptanceRadius)
 	{
 		return true;
 	}

@@ -13,6 +13,7 @@ using namespace DirectX::SimpleMath;
 class grid
 {
 public:
+	grid();
 	grid(float _width, float _depth, int m, int n );
 	~grid();
 	std::vector<Vector3> m_pos;

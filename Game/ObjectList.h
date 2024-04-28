@@ -18,6 +18,8 @@
 #include "CamTarget.h"
 #include "Enemy.h"
 #include"Trigger.h"
+#include "TriggeringPlatform.h"
+#include "TriggeringDoor.h"
 
 //VBGO examples
 #include "fileVBGO.h"

@@ -9,7 +9,7 @@ Enemy::Enemy(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF,fl
 	m_roll = _roll;
 	m_yaw = _yaw;
 	m_scale = _scale;
-	m_isNPC = true;
+	m_isMoveable = true;
 
 	GameObject::Tick(nullptr); //update my world_transform
 

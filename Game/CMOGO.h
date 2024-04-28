@@ -45,7 +45,7 @@ protected:
 	static int m_count;
 	bool m_canMove = true;
 	bool m_isMoving = false;
-	bool m_isNPC = false;
+	bool m_isMoveable = false;
 	//Vector3 m_destination;
 	float m_acceptanceRadius = 0.0f;
 

@@ -31,10 +31,13 @@ public:
 	std::shared_ptr <CamTarget> m_CamTargetP;
 
 	Ray test;
+
+	void Jump();
 protected:
 	GridLocation m_gridPos;
 	float m_mapTileWidth;
 	float m_mapTileDepth;
+	bool m_isFalling = false;
 
 };
 
