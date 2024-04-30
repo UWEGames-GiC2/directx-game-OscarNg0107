@@ -10,6 +10,7 @@ TriggeringDoor::TriggeringDoor(ID3D11Device* _pd3dDevice, IEffectFactory* _EF, V
 	SetDrag(0.7);
 	SetPhysicsOn(true);
 	m_acc = Vector3(1.0f, 0.0f, 0.0f);
+	m_scale = Vector3(1.0f, 4.0f, 4.0f);
 }
 
 TriggeringDoor::~TriggeringDoor()

@@ -24,6 +24,8 @@ public:
 
 	GridLocation& GetGridPos() { return m_gridPos; }
 
+	void SetisFalling(bool _isFalling) { m_isFalling = _isFalling; }
+
 	std::vector<std::shared_ptr<Projectile>> projectiles;
 
 	std::shared_ptr <FPSCamera> m_FPScamP;
@@ -37,7 +39,7 @@ protected:
 	GridLocation m_gridPos;
 	float m_mapTileWidth;
 	float m_mapTileDepth;
-	bool m_isFalling = false;
+	bool m_isFalling = true;
 
 };
 

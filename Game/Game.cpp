@@ -67,6 +67,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     //create GameData struct and populate its pointers
     m_GD = std::make_shared<GameData>();
     m_GD->m_GS = GS_MAINMENU;
+    m_GD->m_CamUsing = GS_PLAY_MAIN_CAM;
 
     //set up systems for 2D rendering
     m_DD2D = std::make_shared<DrawData2D>();
@@ -116,25 +117,35 @@ void Game::Initialize(HWND _window, int _width, int _height)
     std::shared_ptr<Terrain>floor = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, m_mapGrid->GetCentre(), 0.0f, 0.0f, 0.0f, Vector3(10.0f, 0.1f, 10.0f));
     m_GameObjects.push_back(floor);
     m_ColliderObjects.push_back(floor);
+
+    std::shared_ptr<Terrain>floor2 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(0, -100, 0), 0.0f, 0.0f, 0.0f, Vector3(10.0f, 0.1f, 10.0f));
+    m_GameObjects.push_back(floor2);
+    m_ColliderObjects.push_back(floor2);
     
 
     for(size_t i =0; i < 10; i++)
     {
-        std::shared_ptr<Projectile> pProjectile = std::make_shared<Projectile>("BirdModelV1", m_d3dDevice.Get(), m_fxFactory, 5.0f, 40.0f);
+        std::shared_ptr<Projectile> pProjectile = std::make_shared<Projectile>("Shuriken_low", m_d3dDevice.Get(), m_fxFactory, 5.0f, 40.0f);
         pProjectile->SetActive(false);
+        pProjectile->SetScale(0.01f);
         m_GameObjects.push_back(pProjectile);
         m_Projectiles.push_back(pProjectile);
     }
 
-    std::shared_ptr<Trigger> testend = std::make_shared<Trigger>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[1579].GetCentre().x, 20.0f, m_mapGrid->m_gridmap[1579].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(1.0f, 1.0f, 1.0f));
+    /*std::shared_ptr<Trigger> testend = std::make_shared<Trigger>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[1579].GetCentre().x, 20.0f, m_mapGrid->m_gridmap[1579].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(1.0f, 1.0f, 1.0f));
     m_TriggerObjects.push_back(testend);
-    m_GameObjects.push_back(testend);
+    m_GameObjects.push_back(testend);*/
 
-    std::shared_ptr<TriggeringDoor> door = std::make_shared<TriggeringDoor>(m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[92].GetCentre().x, 20.0f, m_mapGrid->m_gridmap[92].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(1.0f, 1.0f, 1.0f), false);
+    m_goal = std::make_shared<Trigger>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[32].GetPos().x, 20.0f, m_mapGrid->m_gridmap[32].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(1.0f, 1.0f, 1.0f));
+    m_GameObjects.push_back(m_goal);
+
+    door = std::make_shared<TriggeringDoor>(m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[1260].GetPos().x, 40.0f, m_mapGrid->m_gridmap[1260].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(1.0f, 1.0f, 1.0f), false);
+    door->SetYaw(door->GetYaw() + 80.0f);
+    std::cout << door->GetYaw();
     m_GameObjects.push_back(door);
     m_ColliderObjects.push_back(door);
 
-    std::shared_ptr<Trigger> doorTrigger = std::make_shared<Trigger>("table", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[292].GetCentre().x, 100.0f, m_mapGrid->m_gridmap[292].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(1.0f, 1.0f, 1.0f));
+    doorTrigger = std::make_shared<Trigger>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[1301].GetPos().x, 50.0f, m_mapGrid->m_gridmap[1301].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f));
     m_ShootToTriggerObjects.push_back(doorTrigger);
     m_GameObjects.push_back(doorTrigger);
 
@@ -145,9 +156,9 @@ void Game::Initialize(HWND _window, int _width, int _height)
 
     //add Player
     m_Player = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory, AR, m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
-    m_Player.get()->SetPos(Vector3(800.0f,100.0f, 610.0f));
     m_GameObjects.push_back(m_Player);
-    m_PhysicsObjects.push_back(m_Player);
+    std::cout << m_Player->GetPos().z;
+    //m_PhysicsObjects.push_back(m_Player);
     m_Player->projectiles = m_Projectiles;
 
     std::shared_ptr<CamTarget>camtarget = std::make_shared<CamTarget>("table", m_d3dDevice.Get(), m_fxFactory, 10.0f, 10.0f, m_Player);
@@ -207,6 +218,27 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_textExit->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(m_textExit->GetString().data(), true)) * 2 / 2, m_outputHeight / 2 - -XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(m_textStart->GetString().data(), true))));
     m_textExit->SetColour(Color((float*)&Colors::Black));
     m_MenuGameObjects2D.push_back(m_textExit);
+
+
+    //Game Win
+
+    m_textWin = std::make_shared<TextGO2D>("You Win!");
+    m_textWin->SetScale(5.0f);
+    m_textWin->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(m_textWin->GetString().data(), true)) * 5 / 2, m_outputHeight / 5));
+    m_textWin->SetColour(Color((float*)&Colors::Black));
+    m_WinGameObjects2D.push_back(m_textWin);
+
+    m_retarttext = std::make_shared<TextGO2D>("Restart");
+    m_retarttext->SetScale(2.0f);
+    m_retarttext->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(m_retarttext->GetString().data(), true)) * 2 / 2, m_outputHeight / 2));
+    m_retarttext->SetColour(Color((float*)&Colors::Black));
+    m_WinGameObjects2D.push_back(m_retarttext);
+
+    m_retuenMenuText = std::make_shared<TextGO2D>("Back To Menu");
+    m_retuenMenuText->SetScale(2.0f);
+    m_retuenMenuText->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(m_retuenMenuText->GetString().data(), true)) * 2 / 2, m_outputHeight / 2 - -XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(m_retarttext->GetString().data(), true))));
+    m_retuenMenuText->SetColour(Color((float*)&Colors::Black));
+    m_WinGameObjects2D.push_back(m_retuenMenuText);
 
     //Test Sounds
     std::shared_ptr <Loop> loop = std::make_shared<Loop>(m_audioEngine.get(), "NightAmbienceSimple_02");
@@ -289,6 +321,7 @@ void Game::Update(DX::StepTimer const& _timer)
         {
             if(startSelected)
             {
+                ResetLevel();
                 m_GD->m_GS = GS_PLAY_MAIN_CAM;
             }
             else
@@ -303,19 +336,20 @@ void Game::Update(DX::StepTimer const& _timer)
     {
     //upon space bar switch camera state
         //see docs here for what's going on: https://github.com/Microsoft/DirectXTK/wiki/Keyboard
-        if (m_GD->m_KBS_tracker.pressed.Space)
+        if (m_GD->m_KBS_tracker.pressed.C)
         {
-            if (m_GD->m_GS == GS_PLAY_MAIN_CAM)
+            if (m_GD->m_CamUsing == GS_PLAY_MAIN_CAM)
             {
-                m_GD->m_GS = GS_PLAY_TPS_CAM;
+                m_GD->m_CamUsing = GS_PLAY_TPS_CAM;
             }
             else
             {
-                m_GD->m_GS = GS_PLAY_MAIN_CAM;
+               m_GD->m_CamUsing = GS_PLAY_MAIN_CAM;
             }
         }
 
-
+        std::cout << "X" << m_Player->GetGridPos().x << std::endl;
+        std::cout << "Y" << m_Player->GetGridPos().y << std::endl;
         //update all objects
         for (std::vector<std::shared_ptr<GameObject>>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
         {
@@ -330,10 +364,46 @@ void Game::Update(DX::StepTimer const& _timer)
         {
             (*it)->Tick(m_GD.get());
         }
-
+        if(m_Player.get()->Intersects(*m_goal))
+        {
+            m_GD->m_GS = GS_GAME_WIN;
+            ResetLevel();
+        }
         CheckCollision();
         CheckProjectileCollision();
         CheckTriggerCollision();
+    }
+
+    else if(m_GD->m_GS == GS_GAME_WIN)
+    {
+        if (m_GD->m_KBS.Up || m_GD->m_KBS.Down)
+        {
+            startSelected = !startSelected;
+        }
+
+        if (startSelected)
+        {
+            m_retarttext->SetColour(Color((float*)&Colors::Red));
+            m_retuenMenuText->SetColour(Color((float*)&Colors::Black));
+        }
+
+        else
+        {
+            m_retarttext->SetColour(Color((float*)&Colors::Black));
+            m_retuenMenuText->SetColour(Color((float*)&Colors::Red));
+        }
+        if (m_GD->m_KBS_tracker.pressed.Enter)
+        {
+            if (startSelected)
+            {
+                ResetLevel();
+                m_GD->m_GS = GS_PLAY_MAIN_CAM;
+            }
+            else
+            {
+                m_GD->m_GS = GS_MAINMENU;
+            }
+        }
     }
 
    
@@ -355,7 +425,7 @@ void Game::Render()
 
     //set which camera to be used
     m_DD->m_cam = m_FPScam.get();
-    if (m_GD->m_GS == GS_PLAY_TPS_CAM)
+    if (m_GD->m_CamUsing == GS_PLAY_TPS_CAM)
     {
         m_DD->m_cam = m_TPScam.get();
     }
@@ -383,7 +453,7 @@ void Game::Render()
         m_DD2D->m_Sprites->End();
     }
 
-    else
+    else if (m_GD->m_GS == GS_PLAY_MAIN_CAM)
     {
      //Draw 3D Game Obejects
         for (std::vector<std::shared_ptr<GameObject>>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
@@ -404,6 +474,19 @@ void Game::Render()
             }
         }
     
+        m_DD2D->m_Sprites->End();
+    }
+
+    else if (m_GD->m_GS == GS_GAME_WIN)
+    {
+        m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
+        for (std::vector<std::shared_ptr<GameObject2D>>::iterator it = m_WinGameObjects2D.begin(); it != m_WinGameObjects2D.end(); it++)
+        {
+            if ((*it).get()->IsActive())
+            {
+                (*it)->Draw(m_DD2D.get());
+            }
+        }
         m_DD2D->m_Sprites->End();
     }
   
@@ -690,24 +773,54 @@ void Game::ReadInput()
 void Game::CheckCollision()
 {
     float dis =0.0f;
-    for (int i = 0; i < m_PhysicsObjects.size(); i++) for (int j = 0; j < m_ColliderObjects.size(); j++)
+    int collision_count = 0;
+    for (int j = 0; j < m_ColliderObjects.size(); j++) {
+
+        if(m_Player->Intersects((*m_ColliderObjects[j])))
+        {
+            XMFLOAT3 eject_vect = Collision::ejectionCMOGO(*m_Player, *m_ColliderObjects[j]);
+            auto pos = m_Player->GetPos();
+            m_Player->SetPos(pos - eject_vect);
+
+            // if the the hit vect is smaller than 0, which means the player is colliding the ground that is facing up
+            if (eject_vect.y < 0)
+            {
+                collision_count++;
+            }
+        }
+        for (int i = 0; i < m_PhysicsObjects.size(); i++)
+        {
+            if (m_PhysicsObjects[i]->Intersects(*m_ColliderObjects[j])) //std::cout << "Collision Detected!" << std::endl;
+            {
+                XMFLOAT3 eject_vect = Collision::ejectionCMOGO(*m_PhysicsObjects[i], *m_ColliderObjects[j]);
+                auto pos = m_PhysicsObjects[i]->GetPos();
+                m_PhysicsObjects[i]->SetPos(pos - eject_vect);
+
+                /* std::cout <<"x" << eject_vect.x << std::endl;
+                 std::cout << "y" << eject_vect.y << std::endl;
+                 std::cout << "z" << eject_vect.z << std::endl;*/
+            }
+
+            /*if(m_ColliderObjects[j]->getCollider().Intersects(m_Player->test.position, m_Player->test.direction, dis))
+            {
+                std::cout << j << '\n' << dis << std::endl;
+            }
+            else
+            {
+                std::cout << "Hello" << std::endl;
+            }*/
+
+
+        }
+    }
+    //std::cout << collision_count << std::endl;
+    if(collision_count > 0)
     {
-        if (m_PhysicsObjects[i]->Intersects(*m_ColliderObjects[j])) //std::cout << "Collision Detected!" << std::endl;
-        {
-            XMFLOAT3 eject_vect = Collision::ejectionCMOGO(*m_PhysicsObjects[i], *m_ColliderObjects[j]);
-            auto pos = m_PhysicsObjects[i]->GetPos();
-            m_PhysicsObjects[i]->SetPos(pos - eject_vect);
- 
-        }
-        
-        /*if(m_ColliderObjects[j]->getCollider().Intersects(m_Player->test.position, m_Player->test.direction, dis))
-        {
-            std::cout << j << '\n' << dis << std::endl;
-        }
-        else
-        {
-            std::cout << "Hello" << std::endl;
-        }*/
+        m_Player.get()->SetisFalling(false);
+    }
+    else
+    {
+        m_Player.get()->SetisFalling(true);
     }
 }
 
@@ -733,14 +846,18 @@ void Game::CheckTriggerCollision()
         }
     }
 
-    for (int i = 0; i < m_ShootToTriggerObjects.size(); i++)
+    for (int i = 0; i < m_Projectiles.size(); i++)
     {
-        for (int j = 0; j < m_Projectiles.size(); j++)
+        if (m_Projectiles[i]->GetIsActive() && m_Projectiles[i]->Intersects(*doorTrigger))
         {
-            if (m_Projectiles[j]->GetIsActive() && m_Projectiles[j]->Intersects(*m_ShootToTriggerObjects[i]))
+            door.get()->Triggered();
+        }
+        for (int j = 0; j < m_ShootToTriggerObjects.size(); j++)
+        {
+            if (m_Projectiles[i]->GetIsActive() && m_Projectiles[i]->Intersects(*m_ShootToTriggerObjects[j]))
             {
-                m_TriggerObjects[i]->OnIntersect();
-                m_Projectiles[j]->SetActive(false);
+                m_ShootToTriggerObjects[j]->OnIntersect();
+                m_Projectiles[i]->SetActive(false);
             }
         }
     }
@@ -754,10 +871,15 @@ void Game::CheckTriggerProjectileCollision()
         {
             if (m_Projectiles[j]->GetIsActive() && m_Projectiles[j]->Intersects(*m_ShootToTriggerObjects[i]))
             {
-                m_TriggerObjects[i]->OnIntersect();
+                m_ShootToTriggerObjects[i]->OnIntersect();
                 m_Projectiles[j]->SetActive(false);
             }
         }
     }
 }
 
+void Game::ResetLevel()
+{
+    m_Player.get()->SetPos(Vector3(760.0f, 10.0f, 600.0f));
+    m_Player.get()->SetAcceleration(Vector3::Zero);
+}

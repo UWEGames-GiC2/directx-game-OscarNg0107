@@ -47,7 +47,11 @@ void Player::Tick(GameData* _GD)
 
 	if(m_isFalling)
 	{
-		m_acc += Vector3::Down * 100.0f;
+		m_acc += Vector3::Down * 2000.0f * _GD->m_dt;
+	}
+	else
+	{
+		m_acc.y = 0;
 	}
 
 	//std::cout << m_gridPosX << std::endl;
@@ -141,6 +145,11 @@ void Player::Tick(GameData* _GD)
 		m_acc.y -= 40.0f;
 	}
 
+	if (_GD->m_KBS_tracker.pressed.Space)
+	{
+		Jump();
+	}
+
 	//Shoot Projectile
 	if(_GD->m_MS.leftButton)
 	{
@@ -189,5 +198,8 @@ void Player::AddCamTargetChild(std::shared_ptr<CamTarget> _child)
 
 void Player::Jump()
 {
-	
+	if(!m_isFalling)
+	{
+		m_vel.y = 50.0f;
+	}
 }

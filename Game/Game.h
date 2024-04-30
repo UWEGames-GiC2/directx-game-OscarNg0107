@@ -137,17 +137,33 @@ private:
 
     std::shared_ptr<Enemy>testEnemy = nullptr;
 
+    std::shared_ptr<Trigger>m_goal = nullptr;
+
     std::shared_ptr<grid> m_mapGrid = nullptr;
 
+
+    std::shared_ptr<TriggeringDoor> door = nullptr;
+    std::shared_ptr<Trigger> doorTrigger = nullptr;
+
+    //main menu
     std::shared_ptr<mainMenu> m_mainMenu = nullptr;
     std::shared_ptr<TextGO2D> m_textStart = nullptr;
     std::shared_ptr<TextGO2D> m_textExit = nullptr;
     bool startSelected = true;
 
+    //game win 
+    std::vector< std::shared_ptr<GameObject2D>> m_WinGameObjects2D;
+    std::shared_ptr<TextGO2D> m_textWin = nullptr;
+    std::shared_ptr<TextGO2D> m_retarttext = nullptr;
+    std::shared_ptr<TextGO2D> m_retuenMenuText = nullptr;
+
+
     void CheckCollision();
     void CheckProjectileCollision();
     void CheckTriggerCollision();
     void CheckTriggerProjectileCollision();
+
+    void ResetLevel();
                                          
     //sound stuff
 	//This uses a simple system, but a better pipeline can be used using Wave Banks

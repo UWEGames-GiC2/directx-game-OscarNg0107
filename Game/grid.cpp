@@ -48,7 +48,7 @@ grid::grid(float _width, float _depth, int m, int n)
 										{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0},
 										{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0},
 										{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0},
-										{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0}
+										{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0}
 										};
 
 	int vertexCount = m * n;
@@ -66,25 +66,25 @@ grid::grid(float _width, float _depth, int m, int n)
 
 	m_centre = Vector3(m_mapwidth * _width / 2, 0.0f, m_mapDepth * _depth / 2);
 
-	for(int i=0; i< m_mapDepth; ++i)
+	for(int i=0; i< m_mapwidth; ++i)
 	{
 		//float z = halfDepth - i * dx;
-		float z = _depth * i;
-		for (int j = 0; j < m_mapwidth; ++j)
+		float x = _width * i;
+		for (int j = 0; j < m_mapDepth; ++j)
 		{
 			//float x = -halfWidth + j * dx;
-			float x = _width * j;
-
+			
+			float z = _depth * j;
 			v = Vector3(x, 0.0f, z);
-			if(map[j][i] == 0)
+			if(map[i][j] == 0)
 			{
-				Tile tile = Tile(j, i,Vector3(x, 0.0f, z), Vector3::One, _width, _depth, true);
+				Tile tile = Tile(i, j,Vector3(x, 0.0f, z), Vector3::One, _width, _depth, true);
 				m_gridmap.push_back(tile);
 				m_pos.push_back(v);
 			}
 			else
 			{
-				Tile tile = Tile(j, i, Vector3(x, 0.0f, z), Vector3::One, _width, _depth, false);
+				Tile tile = Tile(i, j, Vector3(x, 0.0f, z), Vector3::One, _width, _depth, false);
 				m_gridmap.push_back(tile);
 				m_pos.push_back(v);
 				m_walls.push_back(tile);

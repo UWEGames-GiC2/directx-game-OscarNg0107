@@ -20,5 +20,15 @@
     <ImageContentTask Include="..\Models\texture\TGA\S_item.bmp" />
     <ImageContentTask Include="..\Models\TexturesCom_Scifi_Panel_1K_albedo.tif" />
     <ImageContentTask Include="..\Models\TexturesCom_SciFiPanels04_1K_albedo.tif" />
+    <ImageContentTask Include="Material.001_Base_Color.png" />
+    <ImageContentTask Include="Material.001_Metallic.png" />
+    <ImageContentTask Include="Material.001_Mixed_AO.png" />
+    <ImageContentTask Include="Material.001_Normal_DirectX.png" />
+    <ImageContentTask Include="Material.001_Roughness.png" />
+    <ImageContentTask Include="Shuriken star\Material_Base_Color.png" />
+    <ImageContentTask Include="Shuriken star\Material_Metallic.png" />
+    <ImageContentTask Include="Shuriken star\Material_Mixed_AO.png" />
+    <ImageContentTask Include="Shuriken star\Material_Normal_DirectX.png" />
+    <ImageContentTask Include="Shuriken star\Material_Roughness.png" />
   </ItemGroup>
 </Project>

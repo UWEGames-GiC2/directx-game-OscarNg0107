@@ -15,6 +15,7 @@ struct GameData
 {
 	float m_dt;  //time step since last frame
 	GameState m_GS; //global GameState
+	GameState m_CamUsing;
 
 	//player input
 	Keyboard::State m_KBS;
