@@ -182,6 +182,20 @@
     <ImageContentTask Include="Shuriken star\Material_Normal_DirectX.png" />
     <ImageContentTask Include="Shuriken star\Material_Roughness.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="pm0725_13_BodyA1.tga.png" />
+    <ImageContentTask Include="pm0725_13_BodyANor.tga.png" />
+    <ImageContentTask Include="pm0725_13_BodyB1.tga.png" />
+    <ImageContentTask Include="pm0725_13_BodyBNor.tga.png" />
+    <ImageContentTask Include="pm0725_13_BodyC3.tga.png" />
+    <ImageContentTask Include="pm0725_13_BodyCEnv.tga.png" />
+    <ImageContentTask Include="pm0725_13_BodyCNor.tga.png" />
+    <ImageContentTask Include="pm0725_13_Eye1.tga.png" />
+    <ImageContentTask Include="pm0725_13_EyeNor.tga.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Crosshair.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />

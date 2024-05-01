@@ -27,5 +27,7 @@
     <MeshContentTask Include="cube3.fbx" />
     <MeshContentTask Include="Shuriken_low.fbx" />
     <MeshContentTask Include="Shuriken2_low.fbx" />
+    <MeshContentTask Include="Sonicring.fbx" />
+    <MeshContentTask Include="ShinyAshNinja.fbx" />
   </ItemGroup>
 </Project>

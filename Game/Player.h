@@ -32,6 +32,11 @@ public:
 
 	std::shared_ptr <CamTarget> m_CamTargetP;
 
+	void SetCheckPoint(Vector3 _pos) { m_checkpoint = _pos; }
+	void SetJumpCount(int _count) { m_jumpCount = _count; }
+
+	void Respawn();
+
 	Ray test;
 
 	void Jump();
@@ -40,6 +45,8 @@ protected:
 	float m_mapTileWidth;
 	float m_mapTileDepth;
 	bool m_isFalling = true;
+	Vector3 m_checkpoint;
+	int m_jumpCount = 0;
 
 };
 

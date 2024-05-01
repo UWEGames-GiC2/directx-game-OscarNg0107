@@ -9,6 +9,8 @@ public:
 	virtual void Tick(GameData* _GD) override;
 
 	void Fire(Vector3 _startpos, Vector3 _OwnerForwardVector, float _pitch, float _yaw);
+	void SetVelocity(Vector3 _vel) { m_vel = _vel; }
+	Vector3 GetVelocity() { return m_vel; }
 
 protected:
 

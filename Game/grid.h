@@ -20,6 +20,7 @@ public:
 	std::vector<Tile> m_gridmap;
 
 	std::vector<Tile> m_walls;
+	std::vector<Tile> m_floor;
 
 	std::vector<GridLocation>& Neighbours(GridLocation _currentTile);
 

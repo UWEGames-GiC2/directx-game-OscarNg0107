@@ -24,6 +24,7 @@ Projectile::~Projectile()
 
 void Projectile::Tick(GameData* _GD)
 {
+	//std::cout << m_vel.x;
 	if(GetIsActive())
 	{
 		currentLifeTime += _GD->m_dt;

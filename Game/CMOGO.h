@@ -29,6 +29,8 @@ public:
 	void MoveTo(Vector3 _destination, float _speed, float _acceptanceRadius);
 	bool reachDestination(Vector3 _destination, float _acceptanceRadius);
 
+	void SetMovingSpeed(float _speed) { m_movingSpeed = _speed; }
+
 	BoundingOrientedBox&		getCollider()		noexcept { return m_collider; }
 	const BoundingOrientedBox&	getCollider() const noexcept { return m_collider; }
 
@@ -46,6 +48,7 @@ protected:
 	bool m_canMove = true;
 	bool m_isMoving = false;
 	bool m_isMoveable = false;
+	float m_movingSpeed = 1500.0f;
 	//Vector3 m_destination;
 	float m_acceptanceRadius = 0.0f;
 

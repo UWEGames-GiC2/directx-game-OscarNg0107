@@ -114,18 +114,23 @@ void Game::Initialize(HWND _window, int _width, int _height)
         m_ColliderObjects.push_back(wall);
     }
 
+    for (int i = 0; i < m_mapGrid->m_floor.size(); ++i)
+    {
+        std::shared_ptr<Terrain>floor = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, m_mapGrid->m_floor[i].GetCentre(), 0.0f, 0.0f, 0.0f, Vector3(0.2f, 0.2f, 0.2f));
+        m_GameObjects.push_back(floor);
+        m_ColliderObjects.push_back(floor);
+    }
+
     std::shared_ptr<Terrain>floor = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, m_mapGrid->GetCentre(), 0.0f, 0.0f, 0.0f, Vector3(10.0f, 0.1f, 10.0f));
     m_GameObjects.push_back(floor);
     m_ColliderObjects.push_back(floor);
 
-    std::shared_ptr<Terrain>floor2 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(0, -100, 0), 0.0f, 0.0f, 0.0f, Vector3(10.0f, 0.1f, 10.0f));
-    m_GameObjects.push_back(floor2);
-    m_ColliderObjects.push_back(floor2);
+ 
     
 
     for(size_t i =0; i < 10; i++)
     {
-        std::shared_ptr<Projectile> pProjectile = std::make_shared<Projectile>("Shuriken_low", m_d3dDevice.Get(), m_fxFactory, 5.0f, 40.0f);
+        std::shared_ptr<Projectile> pProjectile = std::make_shared<Projectile>("Shuriken_low", m_d3dDevice.Get(), m_fxFactory, 3.0f, 40.0f);
         pProjectile->SetActive(false);
         pProjectile->SetScale(0.01f);
         m_GameObjects.push_back(pProjectile);
@@ -146,7 +151,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_ColliderObjects.push_back(door);
 
     doorTrigger = std::make_shared<Trigger>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[1301].GetPos().x, 50.0f, m_mapGrid->m_gridmap[1301].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f));
-    m_ShootToTriggerObjects.push_back(doorTrigger);
+    //m_ShootToTriggerObjects.push_back(doorTrigger);
     m_GameObjects.push_back(doorTrigger);
 
     //create a base camera
@@ -172,14 +177,6 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects.push_back(m_FPScam);
     m_Player->AddCameraChild(m_FPScam);
    
-
-    //testEnemy = std::make_shared<Enemy>("table", m_d3dDevice.Get(), m_fxFactory, AR, Vector3(m_mapGrid->m_gridmap[10].GetCentre().x, 20.0f, m_mapGrid->m_gridmap[10].GetCentre().z),0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f) , m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
-    //m_GameObjects.push_back(testEnemy);
-    ////testEnemy->pathfinding(*m_mapGrid, testEnemy->m_gridPos, m_Player->GetGridPos());
-    //m_PhysicsObjects.push_back(testEnemy);
-    
-
-
     //create DrawData struct and populate its pointers
     m_DD = std::make_unique<DrawData>();
     m_DD->m_pd3dImmediateContext = nullptr;
@@ -187,13 +184,18 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_DD->m_cam = m_FPScam.get();
     m_DD->m_light = m_light.get();
 
+    std::shared_ptr<ImageGO2D> Crosshair = std::make_shared<ImageGO2D>("Crosshair", m_d3dDevice.Get());
+    Crosshair->SetPos(Vector2(m_outputWidth / 2, m_outputHeight / 2));
+    Crosshair->SetScale(0.2f);
+    m_GameObjects2D.push_back(Crosshair);
+
     //example basic 2D stuff
-    std::shared_ptr<ImageGO2D> logo = std::make_shared<ImageGO2D>("logo_small", m_d3dDevice.Get());
+    /*std::shared_ptr<ImageGO2D> logo = std::make_shared<ImageGO2D>("logo_small", m_d3dDevice.Get());
     logo->SetPos(200.0f * Vector2::One);
     m_GameObjects2D.push_back(logo);
     std::shared_ptr<ImageGO2D> bug_test = std::make_shared<ImageGO2D>("bug_test", m_d3dDevice.Get());
     bug_test->SetPos(300.0f * Vector2::One);
-    m_GameObjects2D.push_back(bug_test);
+    m_GameObjects2D.push_back(bug_test);*/
 
    /* std::shared_ptr<TextGO2D> text = std::make_shared<TextGO2D>("SBTest Text");
     text->SetPos(Vector2(100, 10));
@@ -348,8 +350,8 @@ void Game::Update(DX::StepTimer const& _timer)
             }
         }
 
-        std::cout << "X" << m_Player->GetGridPos().x << std::endl;
-        std::cout << "Y" << m_Player->GetGridPos().y << std::endl;
+        //std::cout << "X" << m_Player->GetGridPos().x << std::endl;
+        //std::cout << "Y" << m_Player->GetGridPos().y << std::endl;
         //update all objects
         for (std::vector<std::shared_ptr<GameObject>>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
         {
@@ -364,6 +366,7 @@ void Game::Update(DX::StepTimer const& _timer)
         {
             (*it)->Tick(m_GD.get());
         }
+
         if(m_Player.get()->Intersects(*m_goal))
         {
             m_GD->m_GS = GS_GAME_WIN;
@@ -786,6 +789,7 @@ void Game::CheckCollision()
             if (eject_vect.y < 0)
             {
                 collision_count++;
+                m_Player->SetJumpCount(0);
             }
         }
         for (int i = 0; i < m_PhysicsObjects.size(); i++)
@@ -830,7 +834,7 @@ void Game::CheckProjectileCollision()
     {
         if (m_Projectiles[i]->GetIsActive() && m_Projectiles[i]->Intersects(*m_ColliderObjects[j])) //std::cout << "Collision Detected!" << std::endl;
         {
-            std::cout << "collision" << std::endl;
+            //std::cout << "collision" << std::endl;
             m_Projectiles[i]->SetActive(false);
         }
     }
@@ -848,8 +852,9 @@ void Game::CheckTriggerCollision()
 
     for (int i = 0; i < m_Projectiles.size(); i++)
     {
-        if (m_Projectiles[i]->GetIsActive() && m_Projectiles[i]->Intersects(*doorTrigger))
+        if (m_Projectiles[i]->Intersects(*doorTrigger))
         {
+            std::cout << "hi";
             door.get()->Triggered();
         }
         for (int j = 0; j < m_ShootToTriggerObjects.size(); j++)
@@ -881,5 +886,6 @@ void Game::CheckTriggerProjectileCollision()
 void Game::ResetLevel()
 {
     m_Player.get()->SetPos(Vector3(760.0f, 10.0f, 600.0f));
+    m_Player->SetCheckPoint(Vector3(760.0f, 10.0f, 600.0f));
     m_Player.get()->SetAcceleration(Vector3::Zero);
 }

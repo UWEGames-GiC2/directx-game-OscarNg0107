@@ -116,7 +116,7 @@ void CMOGO::Tick(GameData* _GD)
 		if(!destinations.empty())
 		{
 			std::cout << "moving" << std::endl;
-			MoveTo(destinations.front(), 1500.0f, 0.2f);
+			MoveTo(destinations.front(), m_movingSpeed, 0.2f);
 			if (reachDestination(destinations.front(), m_acceptanceRadius))
 			{
 				destinations.pop();

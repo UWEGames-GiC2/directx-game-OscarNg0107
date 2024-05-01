@@ -181,6 +181,11 @@ void Player::Tick(GameData* _GD)
 	//	m_vel *= -0.9; //VERY simple bounce back
 	//}
 
+	if(m_pos.y < -50.0f)
+	{
+		Respawn();
+	}
+
 	//apply my base behaviour
 	CMOGO::Tick(_GD);
 }
@@ -198,8 +203,15 @@ void Player::AddCamTargetChild(std::shared_ptr<CamTarget> _child)
 
 void Player::Jump()
 {
-	if(!m_isFalling)
+	if(!m_isFalling || m_jumpCount ==1)
 	{
 		m_vel.y = 50.0f;
+		m_jumpCount++;
+		std::cout << m_jumpCount;
 	}
+}
+
+void Player::Respawn()
+{
+	m_pos = m_checkpoint;
 }
