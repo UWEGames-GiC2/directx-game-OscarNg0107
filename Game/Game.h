@@ -37,6 +37,7 @@ class gird;
 class Enemy;
 class Trigger;
 class TriggeringDoor;
+class MovingObjects;
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
@@ -130,10 +131,12 @@ private:
     std::vector< std::shared_ptr<CMOGO>> m_PhysicsObjects;
     std::vector<std::shared_ptr<Trigger>> m_TriggerObjects;
     std::vector<std::shared_ptr<Trigger>> m_ShootToTriggerObjects;
+    std::vector< std::shared_ptr<CMOGO>> m_DamageObjects;
 
     std::vector< std::shared_ptr<CMOGO>>m_PlayerProjectiles;
     std::vector < std::shared_ptr<Projectile>> m_Projectiles;
     std::shared_ptr<Player> m_Player = nullptr;
+    std::shared_ptr<CamTarget>camtarget = nullptr;
 
     std::shared_ptr<Enemy>testEnemy = nullptr;
 
@@ -162,6 +165,7 @@ private:
     void CheckProjectileCollision();
     void CheckTriggerCollision();
     void CheckTriggerProjectileCollision();
+    void CheckDamagingCollision();
 
     void ResetLevel();
                                          

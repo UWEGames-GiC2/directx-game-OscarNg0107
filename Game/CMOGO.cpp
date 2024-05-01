@@ -109,9 +109,12 @@ CMOGO::~CMOGO()
 
 void CMOGO::Tick(GameData* _GD)
 {
-
 	if(m_isMoveable)
 	{
+		for(int i =0; i < destinations.size() ; i++)
+		{
+			std::cout << destinations.front().x << std::endl;
+		}
 		//std::cout << "Pos.y: " << m_pos.y << std::endl;
 		if(!destinations.empty())
 		{

@@ -214,4 +214,6 @@ void Player::Jump()
 void Player::Respawn()
 {
 	m_pos = m_checkpoint;
+	m_acc = Vector3::Zero;
+	m_vel = Vector3::Zero;
 }

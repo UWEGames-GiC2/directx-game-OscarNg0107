@@ -198,6 +198,9 @@
     <ClInclude Include="Blade.h">
       <Filter>Base\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MovingObjects.h">
+      <Filter>Base\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -303,6 +306,9 @@
       <Filter>Base\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Blade.cpp">
+      <Filter>Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MovingObjects.cpp">
       <Filter>Base\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -24,12 +24,15 @@ public:
 	virtual void Tick(GameData* _GD) override;
 	virtual void Draw(DrawData* _DD) override;
 
-	virtual bool Intersects(const CMOGO& other) const; 
+	virtual bool Intersects(const CMOGO& other) const;
 	void AddDestination(Vector3 _destination);
 	void MoveTo(Vector3 _destination, float _speed, float _acceptanceRadius);
 	bool reachDestination(Vector3 _destination, float _acceptanceRadius);
+	void WillKeepMoving(Vector3 _destination);
 
 	void SetMovingSpeed(float _speed) { m_movingSpeed = _speed; }
+	void setisMovable(bool _bool) { m_isMoveable = _bool; }
+	bool getIsMovable() { return m_isMoveable; }
 
 	BoundingOrientedBox&		getCollider()		noexcept { return m_collider; }
 	const BoundingOrientedBox&	getCollider() const noexcept { return m_collider; }
@@ -47,7 +50,7 @@ protected:
 	static int m_count;
 	bool m_canMove = true;
 	bool m_isMoving = false;
-	bool m_isMoveable = false;
+	bool m_isMoveable;
 	float m_movingSpeed = 1500.0f;
 	//Vector3 m_destination;
 	float m_acceptanceRadius = 0.0f;

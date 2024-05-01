@@ -20,6 +20,7 @@
 #include"Trigger.h"
 #include "TriggeringPlatform.h"
 #include "TriggeringDoor.h"
+#include "MovingObjects.h"
 
 //VBGO examples
 #include "fileVBGO.h"

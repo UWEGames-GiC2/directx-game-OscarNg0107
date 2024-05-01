@@ -103,9 +103,6 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_mapGrid = std::make_shared<grid>(20.0f, 20.0f, 20, 20);
     std::cout << m_mapGrid->m_gridmap[10].GetCentre().x << std::endl;
 
-    std::shared_ptr<Terrain>testbox = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[10].GetCentre().x , 20.0f, m_mapGrid->m_gridmap[10].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f));
-    m_GameObjects.push_back(testbox);
-    m_ColliderObjects.push_back(testbox);
 
     for(int i=0 ; i< m_mapGrid->m_walls.size(); ++i)
     {
@@ -126,7 +123,9 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_ColliderObjects.push_back(floor);
 
  
-    
+    std::shared_ptr<MovingObjects>Shuriken1 = std::make_shared<MovingObjects>("Shuriken2_low", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[650].GetPos().x, 40.0f, m_mapGrid->m_gridmap[650].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.03f, 0.03f, 0.03f), Vector3(320.0f, 0.0f, 0.0f));
+    m_GameObjects.push_back(Shuriken1);
+    m_DamageObjects.push_back(Shuriken1);
 
     for(size_t i =0; i < 10; i++)
     {
@@ -166,7 +165,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     //m_PhysicsObjects.push_back(m_Player);
     m_Player->projectiles = m_Projectiles;
 
-    std::shared_ptr<CamTarget>camtarget = std::make_shared<CamTarget>("table", m_d3dDevice.Get(), m_fxFactory, 10.0f, 10.0f, m_Player);
+    camtarget = std::make_shared<CamTarget>("table", m_d3dDevice.Get(), m_fxFactory, 10.0f, 10.0f, m_Player);
     m_GameObjects.push_back(camtarget);
     m_Player->AddCamTargetChild(camtarget);
     //add a secondary camera
@@ -336,6 +335,7 @@ void Game::Update(DX::StepTimer const& _timer)
 
     else if(m_GD->m_GS == GS_PLAY_MAIN_CAM)
     {
+       
     //upon space bar switch camera state
         //see docs here for what's going on: https://github.com/Microsoft/DirectXTK/wiki/Keyboard
         if (m_GD->m_KBS_tracker.pressed.C)
@@ -375,6 +375,7 @@ void Game::Update(DX::StepTimer const& _timer)
         CheckCollision();
         CheckProjectileCollision();
         CheckTriggerCollision();
+        CheckDamagingCollision();
     }
 
     else if(m_GD->m_GS == GS_GAME_WIN)
@@ -785,6 +786,7 @@ void Game::CheckCollision()
             auto pos = m_Player->GetPos();
             m_Player->SetPos(pos - eject_vect);
 
+
             // if the the hit vect is smaller than 0, which means the player is colliding the ground that is facing up
             if (eject_vect.y < 0)
             {
@@ -799,6 +801,8 @@ void Game::CheckCollision()
                 XMFLOAT3 eject_vect = Collision::ejectionCMOGO(*m_PhysicsObjects[i], *m_ColliderObjects[j]);
                 auto pos = m_PhysicsObjects[i]->GetPos();
                 m_PhysicsObjects[i]->SetPos(pos - eject_vect);
+               
+
 
                 /* std::cout <<"x" << eject_vect.x << std::endl;
                  std::cout << "y" << eject_vect.y << std::endl;
@@ -854,7 +858,7 @@ void Game::CheckTriggerCollision()
     {
         if (m_Projectiles[i]->Intersects(*doorTrigger))
         {
-            std::cout << "hi";
+            //std::cout << "hi";
             door.get()->Triggered();
         }
         for (int j = 0; j < m_ShootToTriggerObjects.size(); j++)
@@ -879,6 +883,17 @@ void Game::CheckTriggerProjectileCollision()
                 m_ShootToTriggerObjects[i]->OnIntersect();
                 m_Projectiles[j]->SetActive(false);
             }
+        }
+    }
+}
+
+void Game::CheckDamagingCollision()
+{
+    for (int j = 0; j < m_DamageObjects.size(); j++)
+    {
+        if (m_Player->Intersects(*m_DamageObjects[j]))
+        {
+            m_Player->Respawn();
         }
     }
 }
