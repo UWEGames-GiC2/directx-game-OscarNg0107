@@ -195,6 +195,9 @@
     <ClInclude Include="TriggeringDoor.h">
       <Filter>Base\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Blade.h">
+      <Filter>Base\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -297,6 +300,9 @@
       <Filter>Base\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TriggeringDoor.cpp">
+      <Filter>Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blade.cpp">
       <Filter>Base\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
