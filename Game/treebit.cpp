@@ -2,7 +2,7 @@
 #include "TreeBit.h"
 #include "GameData.h"
 
-TreeBit::TreeBit(int _levels, int _perLevel, int _ofLevel, float _scale, Vector3 _shift, float _lean, string _bitFileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, TreeBit* _parent, list<TreeBit*>* _tree) :CMOGO(_bitFileName, _pd3dDevice, _EF)
+TreeBit::TreeBit(int _levels, int _perLevel, int _ofLevel, float _scale, Vector3 _shift, float _lean, string _bitFileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, TreeBit* _parent, list<TreeBit*>* _tree) :CMOGO(_bitFileName, _pd3dDevice, _EF, _shift)
 {
 	m_parent = _parent;
 
@@ -11,7 +11,7 @@ TreeBit::TreeBit(int _levels, int _perLevel, int _ofLevel, float _scale, Vector3
 	{
 		m_yaw = XM_2PI *  (float)_ofLevel / (float)_perLevel; //equally spread the branches around the trunk/parent
 		m_pitch = _lean; //leaning the branches out by this angle
-		m_pos = _shift;  //move this far up the trunk/parent
+		//m_pos = _shift;  //move this far up the trunk/parent
 		m_scale = _scale*Vector3::One; //scale me down by this much relative to my trunk/parent
 	}
 	

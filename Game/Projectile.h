@@ -3,7 +3,7 @@
 class Projectile : public CMOGO
 {
 public:
-	Projectile(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, float _lifetime, float _speed);
+	Projectile(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, Vector3 _startpos, float _lifetime, float _speed);
 	~Projectile();
 
 	virtual void Tick(GameData* _GD) override;

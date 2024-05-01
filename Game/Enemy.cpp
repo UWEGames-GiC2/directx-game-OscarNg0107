@@ -1,10 +1,9 @@
 #include "pch.h"
 #include "Enemy.h"
 
-Enemy::Enemy(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF,float _aspectRatio , Vector3 _pos, float _pitch, float _yaw, float _roll, Vector3 _scale, float _mapTileWidth, float _mapTileDepth) : CMOGO(_fileName, _pd3dDevice, _EF)
+Enemy::Enemy(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF,float _aspectRatio , Vector3 _pos, float _pitch, float _yaw, float _roll, Vector3 _scale, float _mapTileWidth, float _mapTileDepth) : CMOGO(_fileName, _pd3dDevice, _EF, _pos)
 {
 	m_fudge = Matrix::CreateRotationY(XM_PI);
-	m_pos = _pos;
 	m_pitch = _pitch;
 	m_roll = _roll;
 	m_yaw = _yaw;

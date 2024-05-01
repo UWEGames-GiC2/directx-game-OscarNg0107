@@ -3,7 +3,6 @@
 #include <iostream>
 TriggeringDoor::TriggeringDoor(ID3D11Device* _pd3dDevice, IEffectFactory* _EF, Vector3 _pos, float _pitch, float _yaw, float _roll, Vector3 _scale, bool _willBacktoStart) :TriggeringPlatform("cube2", _pd3dDevice, _EF, _pos, _pitch, _yaw, _roll, _scale, _willBacktoStart)
 {
-	m_startPos = _pos;
 	m_isMoveable = true;
 	
 	GameObject::Tick(nullptr); //update my world_transform

@@ -4,12 +4,12 @@
 #include "GameData.h"
 #include <iostream>
 
-Player::Player(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, float _aspectRatio, float _mapTileWidth, float _mapTileDepth) : CMOGO(_fileName, _pd3dDevice, _EF)
+Player::Player(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, float _aspectRatio, Vector3 _startpos, float _mapTileWidth, float _mapTileDepth) : CMOGO(_fileName, _pd3dDevice, _EF, _startpos)
 {
 	//any special set up for Player goes here
 	m_fudge = Matrix::CreateRotationY(XM_PI);
 
-	m_pos.y = 10.0f;
+	m_checkpoint = _startpos;
 
 	SetDrag(0.7);
 	SetPhysicsOn(true);
@@ -33,6 +33,10 @@ Player::~Player()
 
 void Player::Tick(GameData* _GD)
 {
+	if(m_life <= 0)
+	{
+		m_isDead = true;
+	}
 	float x = cos(m_pitch) * sin(m_yaw);
 	float y = -sin(m_pitch);
 	float z = cos(m_pitch) * cos(m_yaw);
@@ -213,7 +217,18 @@ void Player::Jump()
 
 void Player::Respawn()
 {
+	ReduceLife();
 	m_pos = m_checkpoint;
 	m_acc = Vector3::Zero;
 	m_vel = Vector3::Zero;
+}
+
+void Player::Reset()
+{
+	CMOGO::Reset();
+	SetYaw(XMConvertToRadians(90.0f));
+	SetCheckPoint(m_startPos);
+	SetAcceleration(Vector3::Zero);
+	ResetLife();
+	
 }

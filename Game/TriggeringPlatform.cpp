@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "TriggeringPlatform.h"
-TriggeringPlatform::TriggeringPlatform(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, Vector3 _pos, float _pitch, float _yaw, float _roll, Vector3 _scale, bool _willBacktoStart) :CMOGO(_fileName, _pd3dDevice, _EF)
+TriggeringPlatform::TriggeringPlatform(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, Vector3 _pos, float _pitch, float _yaw, float _roll, Vector3 _scale, bool _willBacktoStart) :CMOGO(_fileName, _pd3dDevice, _EF, _pos)
 {
-	m_pos = _pos;
 	m_pitch = _pitch;
 	m_roll = _roll;
 	m_yaw = _yaw;
@@ -37,4 +36,11 @@ void TriggeringPlatform::Tick(GameData* _GD)
 {
 
 	CMOGO::Tick(_GD);
+}
+
+void TriggeringPlatform::Reset()
+{
+	CMOGO::Reset();
+
+	isTriggered = false;
 }

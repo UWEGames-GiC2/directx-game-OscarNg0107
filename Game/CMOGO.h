@@ -18,11 +18,13 @@ struct GameData;
 class CMOGO : public GameObject
 {
 public:
-	CMOGO(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF);
+	CMOGO(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, Vector3 _startpos);
 	virtual ~CMOGO();
 
 	virtual void Tick(GameData* _GD) override;
 	virtual void Draw(DrawData* _DD) override;
+
+	virtual void Reset();
 
 	virtual bool Intersects(const CMOGO& other) const;
 	void AddDestination(Vector3 _destination);
@@ -33,6 +35,12 @@ public:
 	void SetMovingSpeed(float _speed) { m_movingSpeed = _speed; }
 	void setisMovable(bool _bool) { m_isMoveable = _bool; }
 	bool getIsMovable() { return m_isMoveable; }
+
+	Vector3 getVel() { return m_vel; }
+	void SetVel(Vector3 _vel) { m_vel = _vel; }
+
+	Vector3 getAcc() { return m_acc; }
+
 
 	BoundingOrientedBox&		getCollider()		noexcept { return m_collider; }
 	const BoundingOrientedBox&	getCollider() const noexcept { return m_collider; }
@@ -53,7 +61,8 @@ protected:
 	bool m_isMoveable;
 	float m_movingSpeed = 1500.0f;
 	//Vector3 m_destination;
-	float m_acceptanceRadius = 0.0f;
+	float m_acceptanceRadius = 10.0f;
+	Vector3 m_startPos;
 
 	std::queue<Vector3> destinations;
 };

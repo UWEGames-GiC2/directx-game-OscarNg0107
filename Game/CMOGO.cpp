@@ -18,8 +18,10 @@ ID3D11RasterizerState*  CMOGO::s_pRasterState = nullptr;
 int CMOGO::m_count = 0;
 
 using namespace DirectX;
-CMOGO::CMOGO(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF) :m_model(nullptr)
+CMOGO::CMOGO(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF,Vector3 _startpos) :m_model(nullptr)
 {
+	m_pos = _startpos;
+	m_startPos = _startpos;
 	//if we've not created it yet do so now
 	if (!s_pRasterState)
 	{
@@ -92,6 +94,8 @@ CMOGO::CMOGO(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF) :
 
 	m_collider.Center = { centerX, centerY, centerZ };
 	m_collider.Extents = { extX, extY, extZ };
+
+	
 }
 
 CMOGO::~CMOGO()
@@ -111,14 +115,10 @@ void CMOGO::Tick(GameData* _GD)
 {
 	if(m_isMoveable)
 	{
-		for(int i =0; i < destinations.size() ; i++)
-		{
-			std::cout << destinations.front().x << std::endl;
-		}
 		//std::cout << "Pos.y: " << m_pos.y << std::endl;
 		if(!destinations.empty())
 		{
-			std::cout << "moving" << std::endl;
+			//std::cout << "moving" << std::endl;
 			MoveTo(destinations.front(), m_movingSpeed, 0.2f);
 			if (reachDestination(destinations.front(), m_acceptanceRadius))
 			{
@@ -128,6 +128,7 @@ void CMOGO::Tick(GameData* _GD)
 				std::cout << "Arrived" << std::endl;
 			}
 		}
+
 	}
 	
 		
@@ -209,7 +210,6 @@ void CMOGO::MoveTo(Vector3 _destination, float _speed, float _acceptanceRadius)
 	{
 		if(m_canMove)
 		{
-			m_acceptanceRadius = _acceptanceRadius;
 			Vector3 dir = _destination - m_pos;
 			dir.Normalize();
 			dir *= _speed;
@@ -233,7 +233,12 @@ bool CMOGO::reachDestination(Vector3 _destination, float _acceptanceRadius)
 		m_pos.y + m_acc.y > _destination.y - _acceptanceRadius &&
 		m_pos.y + m_acc.y < _destination.y + _acceptanceRadius)
 	{
-		return true;
+		return true;	
 	}
 	return false;
+}
+
+void CMOGO::Reset()
+{
+	m_pos = m_startPos;
 }

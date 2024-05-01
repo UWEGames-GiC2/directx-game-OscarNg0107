@@ -11,7 +11,6 @@ public:
 	virtual void Tick(GameData* _GD) override;
 
 private:
-	Vector3 m_startPos;
 
 };
 

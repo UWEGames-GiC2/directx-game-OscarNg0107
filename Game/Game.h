@@ -147,6 +147,7 @@ private:
 
     std::shared_ptr<TriggeringDoor> door = nullptr;
     std::shared_ptr<Trigger> doorTrigger = nullptr;
+    std::shared_ptr<MovingObjects> movingPlat1 = nullptr;
 
     //main menu
     std::shared_ptr<mainMenu> m_mainMenu = nullptr;
@@ -160,6 +161,9 @@ private:
     std::shared_ptr<TextGO2D> m_retarttext = nullptr;
     std::shared_ptr<TextGO2D> m_retuenMenuText = nullptr;
 
+    //game lost
+    std::vector< std::shared_ptr<GameObject2D>> m_LostGameObjects2D;
+    std::shared_ptr<TextGO2D>m_textLost = nullptr;
 
     void CheckCollision();
     void CheckProjectileCollision();

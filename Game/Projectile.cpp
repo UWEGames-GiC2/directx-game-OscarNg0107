@@ -4,7 +4,7 @@
 #include "GameData.h"
 #include <iostream>
 
-Projectile::Projectile(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, float _lifetime, float _speed) : CMOGO(_fileName, _pd3dDevice, _EF)
+Projectile::Projectile(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF,Vector3 _startpos, float _lifetime, float _speed) : CMOGO(_fileName, _pd3dDevice, _EF,_startpos)
 {
 	//any special set up for Player goes here
 	m_fudge = Matrix::CreateRotationY(XM_PI);

@@ -4,7 +4,7 @@
 #include "GameData.h"
 #include <iostream>
 
-CamTarget::CamTarget(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, float _moveSpeed, float _radius, std::shared_ptr<GameObject> _owner) : CMOGO(_fileName, _pd3dDevice, _EF)
+CamTarget::CamTarget(string _fileName, ID3D11Device* _pd3dDevice, IEffectFactory* _EF, float _moveSpeed, float _radius, std::shared_ptr<GameObject> _owner) : CMOGO(_fileName, _pd3dDevice, _EF, Vector3::Zero)
 {
 		m_fudge = Matrix::CreateRotationY(XM_PI);
 

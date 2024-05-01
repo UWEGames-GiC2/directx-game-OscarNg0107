@@ -25,9 +25,11 @@ void GameObject::Tick(GameData* _GD)
 	if (m_physicsOn)
 	{
 		Vector3 newVel = m_vel + _GD->m_dt * (m_acc - m_drag*m_vel);
+		Vector3 newLocalVel = m_localVel + _GD->m_dt * (m_acc - m_drag * m_localVel);
 		Vector3 newPos = m_pos + _GD->m_dt * m_vel;
 
 		m_vel = newVel;
+		m_localVel = newLocalVel;
 		m_pos = newPos;
 	}
 

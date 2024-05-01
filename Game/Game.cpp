@@ -113,23 +113,51 @@ void Game::Initialize(HWND _window, int _width, int _height)
 
     for (int i = 0; i < m_mapGrid->m_floor.size(); ++i)
     {
-        std::shared_ptr<Terrain>floor = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, m_mapGrid->m_floor[i].GetCentre(), 0.0f, 0.0f, 0.0f, Vector3(0.2f, 0.2f, 0.2f));
+        std::shared_ptr<Terrain>floor = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3 (m_mapGrid->m_floor[i].GetCentre().x, 0.0f, m_mapGrid->m_floor[i].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(0.01f, 0.01f, 0.01f));
         m_GameObjects.push_back(floor);
         m_ColliderObjects.push_back(floor);
+        std::cout << m_mapGrid->m_floor[i].GetMapPos().x << "    " << m_mapGrid->m_floor[i].GetMapPos().y << std::endl;
     }
 
-    std::shared_ptr<Terrain>floor = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, m_mapGrid->GetCentre(), 0.0f, 0.0f, 0.0f, Vector3(10.0f, 0.1f, 10.0f));
+    std::shared_ptr<Terrain>floor = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[1380].GetPos().x, 0.0f, m_mapGrid->m_gridmap[1380].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(2.0f, 0.1f, 10.0f));
     m_GameObjects.push_back(floor);
     m_ColliderObjects.push_back(floor);
 
+    std::shared_ptr<Terrain>floor2 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[885].GetPos().x, 0.0f, m_mapGrid->m_gridmap[885].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(1.0f, 0.1f, 1.0f));
+    m_GameObjects.push_back(floor2);
+    m_ColliderObjects.push_back(floor2);
+
+    std::shared_ptr<Terrain>floor3 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[693].GetPos().x, 0.0f, m_mapGrid->m_gridmap[693].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(1.0f, 0.1f, 1.0f));
+    m_GameObjects.push_back(floor3);
+    m_ColliderObjects.push_back(floor3);
+
+    std::shared_ptr<Terrain>floor4 = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[32].GetPos().x, 20.0f, m_mapGrid->m_gridmap[32].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(2.0f, 0.1f, 2.0f));
+    m_GameObjects.push_back(floor4);
+    m_ColliderObjects.push_back(floor4);
+
+    movingPlat1 = std::make_shared<MovingObjects>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[814].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[814].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(0.4f, 0.2f, 0.4f), Vector3(0.0f, 0.0f, 140.0f), 1000.0f, false);
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[620].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[620].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[626].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[626].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[826].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[826].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[837].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[837].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[637].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[637].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[631].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[631].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[271].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[271].GetCentre().z));
+    m_GameObjects.push_back(movingPlat1);
+    m_ColliderObjects.push_back(movingPlat1);
+
  
-    std::shared_ptr<MovingObjects>Shuriken1 = std::make_shared<MovingObjects>("Shuriken2_low", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[650].GetPos().x, 40.0f, m_mapGrid->m_gridmap[650].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.03f, 0.03f, 0.03f), Vector3(320.0f, 0.0f, 0.0f));
+  /*  std::shared_ptr<MovingObjects>Shuriken1 = std::make_shared<MovingObjects>("Shuriken2_low", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[650].GetPos().x, 20.0f, m_mapGrid->m_gridmap[650].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.03f, 0.03f, 0.03f), Vector3(320.0f, 0.0f, 0.0f), 6000.0f, true);
     m_GameObjects.push_back(Shuriken1);
-    m_DamageObjects.push_back(Shuriken1);
+    m_DamageObjects.push_back(Shuriken1);*/
+
+    /*std::shared_ptr<MovingObjects>Shuriken2 = std::make_shared<MovingObjects>("Shuriken2_low", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[1287].GetPos().x, 20.0f, m_mapGrid->m_gridmap[1287].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.03f, 0.03f, 0.03f), Vector3(-320.0f, 0.0f, 0.0f), 6000.0f, true);
+    m_GameObjects.push_back(Shuriken2);
+    m_DamageObjects.push_back(Shuriken2);*/
 
     for(size_t i =0; i < 10; i++)
     {
-        std::shared_ptr<Projectile> pProjectile = std::make_shared<Projectile>("Shuriken_low", m_d3dDevice.Get(), m_fxFactory, 3.0f, 40.0f);
+        std::shared_ptr<Projectile> pProjectile = std::make_shared<Projectile>("Shuriken_low", m_d3dDevice.Get(), m_fxFactory, Vector3::Zero,3.0f, 40.0f);
         pProjectile->SetActive(false);
         pProjectile->SetScale(0.01f);
         m_GameObjects.push_back(pProjectile);
@@ -159,9 +187,10 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects.push_back(m_cam);
 
     //add Player
-    m_Player = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory, AR, m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
+    //Vector3(760.0f, 10.0f, 600.0f)
+    m_Player = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory, AR, Vector3(m_mapGrid->m_gridmap[694].GetCentre().x, 10.0f, m_mapGrid->m_gridmap[694].GetCentre().z), m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
+    std::cout << m_Player->GetPos().y;
     m_GameObjects.push_back(m_Player);
-    std::cout << m_Player->GetPos().z;
     //m_PhysicsObjects.push_back(m_Player);
     m_Player->projectiles = m_Projectiles;
 
@@ -229,17 +258,29 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_textWin->SetColour(Color((float*)&Colors::Black));
     m_WinGameObjects2D.push_back(m_textWin);
 
+    //Game lost
+    m_textLost = std::make_shared<TextGO2D>("GAME OVER");
+    m_textLost->SetScale(5.0f);
+    m_textLost->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(m_textLost->GetString().data(), true)) * 5 / 2, m_outputHeight / 5));
+    m_textLost->SetColour(Color((float*)&Colors::Black));
+    m_LostGameObjects2D.push_back(m_textLost);
+
+
     m_retarttext = std::make_shared<TextGO2D>("Restart");
     m_retarttext->SetScale(2.0f);
     m_retarttext->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(m_retarttext->GetString().data(), true)) * 2 / 2, m_outputHeight / 2));
     m_retarttext->SetColour(Color((float*)&Colors::Black));
     m_WinGameObjects2D.push_back(m_retarttext);
+    m_LostGameObjects2D.push_back(m_retarttext);
 
     m_retuenMenuText = std::make_shared<TextGO2D>("Back To Menu");
     m_retuenMenuText->SetScale(2.0f);
     m_retuenMenuText->SetPos(Vector2(m_outputWidth / 2 - XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(m_retuenMenuText->GetString().data(), true)) * 2 / 2, m_outputHeight / 2 - -XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(m_retarttext->GetString().data(), true))));
     m_retuenMenuText->SetColour(Color((float*)&Colors::Black));
     m_WinGameObjects2D.push_back(m_retuenMenuText);
+    m_LostGameObjects2D.push_back(m_retuenMenuText);
+
+    
 
     //Test Sounds
     std::shared_ptr <Loop> loop = std::make_shared<Loop>(m_audioEngine.get(), "NightAmbienceSimple_02");
@@ -289,6 +330,12 @@ void Game::Update(DX::StepTimer const& _timer)
     }
 
     ReadInput();
+
+    if(m_Player->isDead())
+    {
+        m_GD->m_GS = GS_GAME_OVER;  
+        m_Player->SetIsDead(false);
+    }
 
     if(m_GD->m_GS == GS_MAINMENU)
     {
@@ -410,6 +457,38 @@ void Game::Update(DX::StepTimer const& _timer)
         }
     }
 
+    else if (m_GD->m_GS == GS_GAME_OVER)
+    {
+        if (m_GD->m_KBS.Up || m_GD->m_KBS.Down)
+        {
+            startSelected = !startSelected;
+        }
+
+        if (startSelected)
+        {
+            m_retarttext->SetColour(Color((float*)&Colors::Red));
+            m_retuenMenuText->SetColour(Color((float*)&Colors::Black));
+        }
+
+        else
+        {
+            m_retarttext->SetColour(Color((float*)&Colors::Black));
+            m_retuenMenuText->SetColour(Color((float*)&Colors::Red));
+        }
+        if (m_GD->m_KBS_tracker.pressed.Enter)
+        {
+            if (startSelected)
+            {
+                ResetLevel();
+                m_GD->m_GS = GS_PLAY_MAIN_CAM;
+            }
+            else
+            {
+                m_GD->m_GS = GS_MAINMENU;
+            }
+        }
+        }
+
    
 }
 
@@ -485,6 +564,19 @@ void Game::Render()
     {
         m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
         for (std::vector<std::shared_ptr<GameObject2D>>::iterator it = m_WinGameObjects2D.begin(); it != m_WinGameObjects2D.end(); it++)
+        {
+            if ((*it).get()->IsActive())
+            {
+                (*it)->Draw(m_DD2D.get());
+            }
+        }
+        m_DD2D->m_Sprites->End();
+    }
+
+    else if (m_GD->m_GS == GS_GAME_OVER)
+    {
+        m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
+        for (std::vector<std::shared_ptr<GameObject2D>>::iterator it = m_LostGameObjects2D.begin(); it != m_LostGameObjects2D.end(); it++)
         {
             if ((*it).get()->IsActive())
             {
@@ -792,6 +884,11 @@ void Game::CheckCollision()
             {
                 collision_count++;
                 m_Player->SetJumpCount(0);
+
+                if (m_ColliderObjects[j]->getVel().x != 0 || m_ColliderObjects[j]->getVel().z != 0)
+                {
+                    m_Player->SetVel(Vector3(m_ColliderObjects[j]->getVel().x + m_Player->GetCurrentVel().x, m_Player->GetCurrentVel().y, m_ColliderObjects[j]->getVel().z + m_Player->GetCurrentVel().z));
+                }
             }
         }
         for (int i = 0; i < m_PhysicsObjects.size(); i++)
@@ -900,7 +997,6 @@ void Game::CheckDamagingCollision()
 
 void Game::ResetLevel()
 {
-    m_Player.get()->SetPos(Vector3(760.0f, 10.0f, 600.0f));
-    m_Player->SetCheckPoint(Vector3(760.0f, 10.0f, 600.0f));
-    m_Player.get()->SetAcceleration(Vector3::Zero);
+    m_Player->Reset();
+    door->Reset();
 }

@@ -9,9 +9,12 @@ public:
 	virtual void BackToStart();
 
 	virtual void Tick(GameData* _GD) override;
+	virtual void Reset() override;
 
 protected:
 	bool m_willBackToStart;
 	bool isTriggered = false;
+
+
 };
 
