@@ -168,12 +168,12 @@ void Player::Tick(GameData* _GD)
 				Vector3 forwardOffset = Vector3::Transform(Vector3::Forward, Matrix::CreateRotationY(m_yaw));
 				Vector3 upOffset = Vector3::Up * 15;
 				projectiles[i]->Fire(this->GetPos() + forwardOffset + upOffset, Vector3::Forward, moveDir.y , this->GetYaw());
-				std::cout << moveDir.y << std::endl;
+				//std::cout << moveDir.y << std::endl;
 				
 			}
 		}
 	}
-	float lookPitch = atan2(-(m_FPScamP->GetView()(3, 1)), sqrtf(pow((m_FPScamP->GetView()(3, 2)), 2) + pow((m_FPScamP->GetView()(3, 3)), 2)));
+	//float lookPitch = atan2(-(m_FPScamP->GetView()(3, 1)), sqrtf(pow((m_FPScamP->GetView()(3, 2)), 2) + pow((m_FPScamP->GetView()(3, 3)), 2)));
 	//std::cout << lookPitch *180 / (atan(1) * 4) << std::endl;
 	//limit motion of the player
 	//float length = m_pos.Length();
@@ -206,7 +206,7 @@ void Player::Jump()
 	{
 		m_vel.y = 50.0f;
 		m_jumpCount++;
-		std::cout << m_jumpCount;
+		//std::cout << m_jumpCount;
 	}
 }
 

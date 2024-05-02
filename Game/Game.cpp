@@ -102,7 +102,6 @@ void Game::Initialize(HWND _window, int _width, int _height)
     //example basic 3D stuff
 
     m_mapGrid = std::make_shared<grid>(20.0f, 20.0f, 20, 20);
-    std::cout << m_mapGrid->m_gridmap[10].GetCentre().x << std::endl;
 
 
     for(int i=0 ; i< m_mapGrid->m_walls.size(); ++i)
@@ -208,7 +207,6 @@ void Game::Initialize(HWND _window, int _width, int _height)
 
     //add Player
     m_Player = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory, AR, Vector3(760.0f, 10.0f, 600.0f), m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
-    std::cout << m_Player->GetPos().y;
     m_GameObjects.push_back(m_Player);
     //m_PhysicsObjects.push_back(m_Player);
     m_Player->projectiles = m_Projectiles;
@@ -381,7 +379,7 @@ void Game::Update(DX::StepTimer const& _timer)
             (*it)->Tick(m_GD.get());
         }
 
-        if (m_GD->m_KBS.Up || m_GD->m_KBS.Down)
+        if (m_GD->m_KBS_tracker.pressed.Up || m_GD->m_KBS_tracker.pressed.Down)
         {
             startSelected = !startSelected;
         }
@@ -491,7 +489,7 @@ void Game::Update(DX::StepTimer const& _timer)
 
     else if(m_GD->m_GS == GS_GAME_WIN)
     {
-        if (m_GD->m_KBS.Up || m_GD->m_KBS.Down)
+        if (m_GD->m_KBS_tracker.pressed.Up || m_GD->m_KBS_tracker.pressed.Down)
         {
             startSelected = !startSelected;
         }
@@ -523,7 +521,7 @@ void Game::Update(DX::StepTimer const& _timer)
 
     else if (m_GD->m_GS == GS_GAME_OVER)
     {
-        if (m_GD->m_KBS.Up || m_GD->m_KBS.Down)
+        if (m_GD->m_KBS_tracker.pressed.Up || m_GD->m_KBS_tracker.pressed.Down)
         {
             startSelected = !startSelected;
         }

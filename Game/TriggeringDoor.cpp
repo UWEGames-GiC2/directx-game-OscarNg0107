@@ -20,8 +20,6 @@ TriggeringDoor::~TriggeringDoor()
 void TriggeringDoor::Triggered()
 {
 	AddDestination(Vector3(m_startPos.x, m_startPos.y + 100, m_startPos.z));
-
-	std::cout << "hi" << std::endl;
 }
 
 void TriggeringDoor::BackToStart()
