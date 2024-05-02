@@ -40,5 +40,7 @@
     <ImageContentTask Include="pm0725_13_Eye1.tga.png" />
     <ImageContentTask Include="pm0725_13_EyeNor.tga.png" />
     <ImageContentTask Include="Crosshair.png" />
+    <ImageContentTask Include="Box-wood_NOR.png" />
+    <ImageContentTask Include="Box-wood_TEX.png" />
   </ItemGroup>
 </Project>

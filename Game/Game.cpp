@@ -7,6 +7,7 @@
 #include <time.h>
 
 #include <iostream>
+#include <string>
 
 //Scarle Headers
 #include "GameData.h"
@@ -113,11 +114,18 @@ void Game::Initialize(HWND _window, int _width, int _height)
 
     for (int i = 0; i < m_mapGrid->m_floor.size(); ++i)
     {
-        std::shared_ptr<Terrain>floor = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3 (m_mapGrid->m_floor[i].GetCentre().x, 0.0f, m_mapGrid->m_floor[i].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(0.01f, 0.01f, 0.01f));
+        std::shared_ptr<Terrain>floor = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3 (m_mapGrid->m_floor[i].GetCentre().x, -100.0f, m_mapGrid->m_floor[i].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(0.2f, 0.2f, 0.2f));
         m_GameObjects.push_back(floor);
         m_ColliderObjects.push_back(floor);
-        std::cout << m_mapGrid->m_floor[i].GetMapPos().x << "    " << m_mapGrid->m_floor[i].GetMapPos().y << std::endl;
     }
+
+    for (int i = 0; i < m_mapGrid->m_obstacles.size(); ++i)
+    {
+        std::shared_ptr<Terrain>obstacle = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_obstacles[i].GetPos().x, 20.0f, m_mapGrid->m_obstacles[i].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.3f, 0.1f, 0.4f));
+        m_GameObjects.push_back(obstacle);
+        m_ColliderObjects.push_back(obstacle);
+    }
+
 
     std::shared_ptr<Terrain>floor = std::make_shared<Terrain>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[1380].GetPos().x, 0.0f, m_mapGrid->m_gridmap[1380].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(2.0f, 0.1f, 10.0f));
     m_GameObjects.push_back(floor);
@@ -135,25 +143,29 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects.push_back(floor4);
     m_ColliderObjects.push_back(floor4);
 
-    movingPlat1 = std::make_shared<MovingObjects>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[814].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[814].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(0.4f, 0.2f, 0.4f), Vector3(0.0f, 0.0f, 140.0f), 1000.0f, false);
-    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[620].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[620].GetCentre().z));
-    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[626].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[626].GetCentre().z));
-    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[826].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[826].GetCentre().z));
-    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[837].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[837].GetCentre().z));
-    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[637].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[637].GetCentre().z));
-    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[631].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[631].GetCentre().z));
-    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[271].GetCentre().x, 5.0f, m_mapGrid->m_gridmap[271].GetCentre().z));
+    movingPlat1 = std::make_shared<MovingObjects>("Box Wood", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[814].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[814].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(0.2f, 0.2f, 0.2f), Vector3(0.0f, 0.0f, 140.0f), 1000.0f, false, false);
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[620].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[620].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[626].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[626].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[826].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[826].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[837].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[837].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[637].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[637].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[631].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[631].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[271].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[271].GetCentre().z));
     m_GameObjects.push_back(movingPlat1);
     m_ColliderObjects.push_back(movingPlat1);
 
  
-  /*  std::shared_ptr<MovingObjects>Shuriken1 = std::make_shared<MovingObjects>("Shuriken2_low", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[650].GetPos().x, 20.0f, m_mapGrid->m_gridmap[650].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.03f, 0.03f, 0.03f), Vector3(320.0f, 0.0f, 0.0f), 6000.0f, true);
+    std::shared_ptr<MovingObjects>Shuriken1 = std::make_shared<MovingObjects>("Shuriken2_low", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[650].GetPos().x, 20.0f, m_mapGrid->m_gridmap[650].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.03f, 0.03f, 0.03f), Vector3(320.0f, 0.0f, 0.0f), 5000.0f, true, true);
     m_GameObjects.push_back(Shuriken1);
-    m_DamageObjects.push_back(Shuriken1);*/
+    m_DamageObjects.push_back(Shuriken1);
 
-    /*std::shared_ptr<MovingObjects>Shuriken2 = std::make_shared<MovingObjects>("Shuriken2_low", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[1287].GetPos().x, 20.0f, m_mapGrid->m_gridmap[1287].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.03f, 0.03f, 0.03f), Vector3(-320.0f, 0.0f, 0.0f), 6000.0f, true);
+    std::shared_ptr<MovingObjects>Shuriken2 = std::make_shared<MovingObjects>("Shuriken2_low", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[1287].GetPos().x, 20.0f, m_mapGrid->m_gridmap[1287].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.03f, 0.03f, 0.03f), Vector3(-320.0f, 0.0f, 0.0f), 5000.0f, true, true);
     m_GameObjects.push_back(Shuriken2);
-    m_DamageObjects.push_back(Shuriken2);*/
+    m_DamageObjects.push_back(Shuriken2);
+
+    std::shared_ptr<MovingObjects>Shuriken3 = std::make_shared<MovingObjects>("Shuriken2_low", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[597].GetCentre().x, 20.0f, m_mapGrid->m_gridmap[597].GetCentre().z), 0.0f, 0.0f, 0.0f, Vector3(0.02f, 0.02f, 0.02f), Vector3(140.0f, 0.0f, 0.0f), 1500.0f, true, true);
+    m_GameObjects.push_back(Shuriken3);
+    m_DamageObjects.push_back(Shuriken3);
 
     for(size_t i =0; i < 10; i++)
     {
@@ -171,15 +183,23 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_goal = std::make_shared<Trigger>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[32].GetPos().x, 20.0f, m_mapGrid->m_gridmap[32].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(1.0f, 1.0f, 1.0f));
     m_GameObjects.push_back(m_goal);
 
+    m_checkPoint = std::make_shared<Trigger>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[733].GetPos().x, 10.0f, m_mapGrid->m_gridmap[733].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.5f, 0.5f, 0.5f));
+
     door = std::make_shared<TriggeringDoor>(m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[1260].GetPos().x, 40.0f, m_mapGrid->m_gridmap[1260].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(1.0f, 1.0f, 1.0f), false);
-    door->SetYaw(door->GetYaw() + 80.0f);
-    std::cout << door->GetYaw();
+    door->SetYaw(door->GetYaw() + 80.0f);;
     m_GameObjects.push_back(door);
     m_ColliderObjects.push_back(door);
 
     doorTrigger = std::make_shared<Trigger>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[1301].GetPos().x, 50.0f, m_mapGrid->m_gridmap[1301].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f));
-    //m_ShootToTriggerObjects.push_back(doorTrigger);
     m_GameObjects.push_back(doorTrigger);
+
+    door2 = std::make_shared<TriggeringDoor>(m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[592].GetPos().x, 40.0f, m_mapGrid->m_gridmap[592].GetPos().z), 0.0f, XMConvertToRadians(90), 0.0f, Vector3(1.0f, 1.0f, 1.0f), false);
+    door2->SetYaw(door2->GetYaw() + 80.0f);
+    m_GameObjects.push_back(door2);
+    m_ColliderObjects.push_back(door2);
+
+    doorTrigger2 = std::make_shared<Trigger>("cube3", m_d3dDevice.Get(), m_fxFactory, Vector3(m_mapGrid->m_gridmap[630].GetPos().x, 50.0f, m_mapGrid->m_gridmap[630].GetPos().z), 0.0f, 0.0f, 0.0f, Vector3(0.1f, 0.1f, 0.1f));
+    m_GameObjects.push_back(doorTrigger2);
 
     //create a base camera
     m_cam = std::make_shared<Camera>(0.25f * XM_PI, AR, 1.0f, 10000.0f, Vector3::UnitY, Vector3::Zero);
@@ -187,8 +207,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects.push_back(m_cam);
 
     //add Player
-    //Vector3(760.0f, 10.0f, 600.0f)
-    m_Player = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory, AR, Vector3(m_mapGrid->m_gridmap[694].GetCentre().x, 10.0f, m_mapGrid->m_gridmap[694].GetCentre().z), m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
+    m_Player = std::make_shared<Player>("botan", m_d3dDevice.Get(), m_fxFactory, AR, Vector3(760.0f, 10.0f, 600.0f), m_mapGrid->GetTileWidth(), m_mapGrid->GetTileDepth());
     std::cout << m_Player->GetPos().y;
     m_GameObjects.push_back(m_Player);
     //m_PhysicsObjects.push_back(m_Player);
@@ -249,6 +268,19 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_textExit->SetColour(Color((float*)&Colors::Black));
     m_MenuGameObjects2D.push_back(m_textExit);
 
+    //In-Game
+
+    std::shared_ptr<TextGO2D> lifeText = std::make_shared<TextGO2D>("Life Left: ");
+    lifeText->SetScale(2.0f);
+    lifeText->SetPos(Vector2(10.0f, 10.0f));
+    lifeText->SetColour(Color((float*)&Colors::Black));
+    m_GameObjects2D.push_back(lifeText);
+
+    m_numOfLife = std::make_shared<TextGO2D>(std::to_string(m_Player->GetLife()));
+    m_numOfLife->SetScale(2.0f);
+    m_numOfLife->SetPos(Vector2( lifeText->GetPos().x + XMVectorGetX(m_DD2D->m_Font.get()->MeasureString(lifeText->GetString().data(), true) * 2), lifeText->GetPos().y));
+    m_numOfLife->SetColour(Color((float*)&Colors::Black));
+    m_GameObjects2D.push_back(m_numOfLife);
 
     //Game Win
 
@@ -382,6 +414,21 @@ void Game::Update(DX::StepTimer const& _timer)
 
     else if(m_GD->m_GS == GS_PLAY_MAIN_CAM)
     {
+
+        if (m_Player->GetPos().y < -50.0f)
+        {
+            m_Player->Respawn();
+            m_numOfLife->SetString(std::to_string(m_Player->GetLife()));
+            movingPlat1->Reset();
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[620].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[620].GetCentre().z));
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[626].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[626].GetCentre().z));
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[826].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[826].GetCentre().z));
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[837].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[837].GetCentre().z));
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[637].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[637].GetCentre().z));
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[631].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[631].GetCentre().z));
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[271].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[271].GetCentre().z));
+        }
+       
        
     //upon space bar switch camera state
         //see docs here for what's going on: https://github.com/Microsoft/DirectXTK/wiki/Keyboard
@@ -418,6 +465,23 @@ void Game::Update(DX::StepTimer const& _timer)
         {
             m_GD->m_GS = GS_GAME_WIN;
             ResetLevel();
+        }
+
+        if (m_Player.get()->Intersects(*m_checkPoint))
+        {
+            m_Player->SetCheckPoint(m_checkPoint->GetPos());
+        }
+
+
+        if(m_Player.get()->Intersects(*movingPlat1))
+        {
+            XMFLOAT3 eject_vect = Collision::ejectionCMOGO(*m_Player, *movingPlat1);
+            // if the the hit vect is smaller than 0, which means the player is colliding the ground that is facing up
+            if (eject_vect.y < 0)
+            {
+                movingPlat1->StartMove();
+            }
+           
         }
         CheckCollision();
         CheckProjectileCollision();
@@ -958,6 +1022,11 @@ void Game::CheckTriggerCollision()
             //std::cout << "hi";
             door.get()->Triggered();
         }
+        if (m_Projectiles[i]->Intersects(*doorTrigger2))
+        {
+            //std::cout << "hi";
+            door2.get()->Triggered();
+        }
         for (int j = 0; j < m_ShootToTriggerObjects.size(); j++)
         {
             if (m_Projectiles[i]->GetIsActive() && m_Projectiles[i]->Intersects(*m_ShootToTriggerObjects[j]))
@@ -991,12 +1060,32 @@ void Game::CheckDamagingCollision()
         if (m_Player->Intersects(*m_DamageObjects[j]))
         {
             m_Player->Respawn();
+            m_numOfLife->SetString(std::to_string(m_Player->GetLife()));
+            movingPlat1->Reset();
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[620].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[620].GetCentre().z));
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[626].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[626].GetCentre().z));
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[826].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[826].GetCentre().z));
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[837].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[837].GetCentre().z));
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[637].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[637].GetCentre().z));
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[631].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[631].GetCentre().z));
+            movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[271].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[271].GetCentre().z));
         }
     }
 }
 
 void Game::ResetLevel()
 {
+
     m_Player->Reset();
+    m_numOfLife->SetString(std::to_string(m_Player->GetLife()));
     door->Reset();
+    door->Reset();
+    movingPlat1->Reset();
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[620].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[620].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[626].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[626].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[826].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[826].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[837].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[837].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[637].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[637].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[631].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[631].GetCentre().z));
+    movingPlat1->AddDestination(Vector3(m_mapGrid->m_gridmap[271].GetCentre().x, -10.0f, m_mapGrid->m_gridmap[271].GetCentre().z));
 }

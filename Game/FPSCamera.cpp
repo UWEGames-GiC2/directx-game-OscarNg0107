@@ -19,7 +19,7 @@ FPSCamera::~FPSCamera()
 void FPSCamera::Tick(GameData* _GD)
 {
 	m_target = m_targetObject->GetPos();
-	Vector3 forwardMove = 1.0f * m_owner->GetVectorForward();
+	Vector3 forwardMove = 2.0f * m_owner->GetVectorForward();
 	Matrix rotMove = Matrix::CreateRotationY(m_owner->GetYaw());
 	forwardMove = Vector3::Transform(forwardMove, rotMove);
 	m_pos = m_owner->GetPos() + forwardMove + m_owner->GetVectorUp() * 15.0f;

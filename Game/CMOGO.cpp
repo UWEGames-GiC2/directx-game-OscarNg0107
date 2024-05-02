@@ -115,17 +115,16 @@ void CMOGO::Tick(GameData* _GD)
 {
 	if(m_isMoveable)
 	{
-		//std::cout << "Pos.y: " << m_pos.y << std::endl;
+		
 		if(!destinations.empty())
 		{
-			//std::cout << "moving" << std::endl;
 			MoveTo(destinations.front(), m_movingSpeed, 0.2f);
 			if (reachDestination(destinations.front(), m_acceptanceRadius))
 			{
 				destinations.pop();
 				SetAcceleration(Vector3::Zero);
 				m_canMove = true;
-				std::cout << "Arrived" << std::endl;
+				//std::cout << "Arrived" << std::endl;
 			}
 		}
 

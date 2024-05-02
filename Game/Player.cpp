@@ -185,11 +185,6 @@ void Player::Tick(GameData* _GD)
 	//	m_vel *= -0.9; //VERY simple bounce back
 	//}
 
-	if(m_pos.y < -50.0f)
-	{
-		Respawn();
-	}
-
 	//apply my base behaviour
 	CMOGO::Tick(_GD);
 }

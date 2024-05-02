@@ -142,12 +142,18 @@ private:
 
     std::shared_ptr<Trigger>m_goal = nullptr;
 
+    std::shared_ptr<Trigger>m_checkPoint = nullptr;
+
     std::shared_ptr<grid> m_mapGrid = nullptr;
 
 
     std::shared_ptr<TriggeringDoor> door = nullptr;
     std::shared_ptr<Trigger> doorTrigger = nullptr;
+    std::shared_ptr<TriggeringDoor> door2 = nullptr;
+    std::shared_ptr<Trigger> doorTrigger2 = nullptr;
     std::shared_ptr<MovingObjects> movingPlat1 = nullptr;
+
+    std::shared_ptr<TextGO2D> m_numOfLife = nullptr;
 
     //main menu
     std::shared_ptr<mainMenu> m_mainMenu = nullptr;

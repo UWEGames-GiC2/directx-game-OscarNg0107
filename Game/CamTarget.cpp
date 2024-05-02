@@ -42,7 +42,7 @@ void CamTarget::Tick(GameData* _GD)
 
 	Matrix rotCam = Matrix::CreateFromYawPitchRoll(m_Yaw, m_Pitch, 0);
 	Vector3 offset = Vector3(0.0f, 0.1f, 0.0f);
-	Vector3 forwardOffset = 1.0f * m_targetObject->GetVectorForward();
+	Vector3 forwardOffset = 2.0f * m_targetObject->GetVectorForward();
 	Matrix rotMove = Matrix::CreateRotationY(m_targetObject->GetYaw());
 	forwardOffset = Vector3::Transform(forwardOffset, rotMove);
 	Vector3 upOffset = m_targetObject->GetVectorUp() * 15.0f;

@@ -16,6 +16,7 @@ public:
 	virtual void Draw(DrawData2D* _DD);
 
 	string GetString() { return m_text; }
+	void SetString(string _text) { m_text = _text; }
 protected:
 	string m_text;
 };

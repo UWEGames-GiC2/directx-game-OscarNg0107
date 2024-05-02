@@ -56,7 +56,7 @@ protected:
 	bool m_isFalling = true;
 	Vector3 m_checkpoint;
 	int m_jumpCount = 0;
-	int m_life = 1;
+	int m_life = 3;
 	bool m_isDead = false;
 	
 

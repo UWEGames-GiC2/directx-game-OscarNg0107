@@ -21,6 +21,7 @@ public:
 
 	std::vector<Tile> m_walls;
 	std::vector<Tile> m_floor;
+	std::vector<Tile> m_obstacles;
 
 	std::vector<GridLocation>& Neighbours(GridLocation _currentTile);
 

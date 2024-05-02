@@ -40,6 +40,7 @@ public:
 
 	bool IsActive() { return m_IsAtive; }
 	Vector2 GetScale() { return m_scale; }
+	Vector2 GetPos() { return m_pos; }
 
 protected:
 	Vector2 m_pos;
